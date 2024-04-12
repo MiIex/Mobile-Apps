@@ -11,7 +11,7 @@
         <InputGroupAddon>
           <i class="pi pi-key"></i>
         </InputGroupAddon>
-        <Password v-model="value" placeholder="Passwort" toggleMask :feedback="false" />
+        <Password v-model="password" placeholder="Passwort" toggleMask :feedback="false" />
       </InputGroup>
       <div class="flex align-items-center">
         <label for="stay-signed-in" class="ml-2"> Eingeloggt bleiben </label>
@@ -32,13 +32,13 @@
 import { ref } from 'vue'
 
 const username = ref(null);
-const value = ref(null);
+const password = ref(null);
 let checked = ref(false);
 
 
 const clicked = () => {
-  console.log(username);
-  console.log(value);
+  console.log(username.value);
+  console.log(password.value);
 };
 </script>
 
