@@ -24,7 +24,10 @@
       <RouterLink to="/registry" tag="button">
         <Button label="Neuen Account erstellen" class="registry-btn" link></Button>
       </RouterLink>
-
+      <RouterLink to="/registry" tag="button">
+        <Button label="Neuen Account erstellen" class="registry-btn" link></Button>
+      </RouterLink>
+      
     </div>
   </div>
 </template>
@@ -57,6 +60,16 @@ const clicked = () => {
   margin-left: 25%;
   margin-right: auto;
 }
+
+  .registry-btn{
+    width: 80%;
+    margin-left: 10%;
+  }
+  .login-btn{
+    width:50%;
+    margin-left: 25%;
+    margin-right: auto;
+  }
 
   .registry-btn{
     width: 80%;
