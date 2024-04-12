@@ -11,7 +11,7 @@
         <InputGroupAddon>
           <i class="pi pi-key"></i>
         </InputGroupAddon>
-        <Password v-model="value" placeholder="Passwort" toggleMask :feedback="false" />
+        <Password v-model="password" placeholder="Passwort" toggleMask :feedback="false" />
       </InputGroup>
       <div class="flex align-items-center">
         <label for="stay-signed-in" class="ml-2"> Eingeloggt bleiben </label>
@@ -20,7 +20,9 @@
       <RouterLink to="/chat" tag="button">
         <Button @click="clicked" label="Log In" class="login-btn"></Button>
       </RouterLink>
-
+      <RouterLink to="/registry" tag="button">
+        <Button label="Neuen Account erstellen" class="registry-btn" link></Button>
+      </RouterLink>
     </div>
   </div>
 </template>
@@ -28,14 +30,13 @@
 <script setup>
 import { ref } from 'vue'
 
-const username = ref(null);
-const value = ref(null);
+const username = ref(null)
+const password = ref(null);
 let checked = ref(false);
 
-
 const clicked = () => {
-  console.log(username);
-  console.log(value);
+  console.log(username.value);
+  console.log(password.value);
 };
 </script>
 
@@ -47,6 +48,16 @@ const clicked = () => {
   background-color: rgb(255, 255, 255);
 }
 
+.login-btn {
+  width: 50%;
+  margin-left: 25%;
+  margin-right: auto;
+}
+
+.registry-btn{
+  width: 80%;
+  margin-left: 10%;
+}
 
 .login-btn {
   width: 50%;
