@@ -51,6 +51,7 @@ const clicked = () => {
   console.log(username);
   console.log(value);
 };
+const password = ref(null);
 let checked = ref(false);
 
 
