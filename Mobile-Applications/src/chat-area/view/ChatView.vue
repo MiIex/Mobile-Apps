@@ -1,3 +1,7 @@
 <template>
-    <h1>Chat</h1>
- </template>
+    <ChatView></ChatView>
+</template>
+
+<script setup>
+import ChatView from './../component/Chat.vue'
+</script>
