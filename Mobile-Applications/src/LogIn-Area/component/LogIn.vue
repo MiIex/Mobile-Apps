@@ -7,6 +7,7 @@
         </InputGroupAddon>
         <InputText v-model="username" placeholder="Username" />
         <InputText v-model="username" placeholder="Username" />
+        <InputText v-model="username" placeholder="Username" />
       </InputGroup>
       <InputGroup>
         <InputGroupAddon>
@@ -20,6 +21,10 @@
       </div>
       <RouterLink to="/chat" tag="button">
         <Button @click="clicked" label="Log In" class="login-btn"></Button>
+        <Button @click="clicked" label="Log In" class="login-btn"></Button>
+      </RouterLink>
+      <RouterLink to="/registry" tag="button">
+        <Button label="Neuen Account erstellen" class="registry-btn" link></Button>
       </RouterLink>
       <RouterLink to="/registry" tag="button">
         <Button label="Neuen Account erstellen" class="registry-btn" link></Button>
@@ -34,9 +39,18 @@
 
 <script setup>
 import { ref } from 'vue'
+import { ref } from 'vue'
 
 const username = ref(null);
+const username = ref(null);
 const password = ref(null);
+let checked = ref(false);
+
+
+const clicked = () => {
+  console.log(username);
+  console.log(value);
+};
 let checked = ref(false);
 
 
@@ -47,6 +61,12 @@ const clicked = () => {
 </script>
 
 <style lang="scss">
+.login-container {
+  margin-left: auto;
+  margin-right: auto;
+  width: 85%;
+  background-color: rgb(255, 255, 255);
+}
 .login-container {
   margin-left: auto;
   margin-right: auto;
@@ -65,12 +85,15 @@ const clicked = () => {
     width: 80%;
     margin-left: 10%;
   }
-  .login-btn{
-    width:50%;
-    margin-left: 25%;
-    margin-right: auto;
-  }
+.login-btn {
+  width: 50%;
+  margin-left: 25%;
+  margin-right: auto;
+}
 
+label {
+  color: black;
+}
   .registry-btn{
     width: 80%;
     margin-left: 10%;
