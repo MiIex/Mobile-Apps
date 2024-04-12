@@ -6,6 +6,7 @@
           <i class="pi pi-user"></i>
         </InputGroupAddon>
         <InputText v-model="username" placeholder="Username" />
+        <InputText v-model="username" placeholder="Username" />
       </InputGroup>
       <InputGroup>
         <InputGroupAddon>
@@ -23,7 +24,7 @@
       <RouterLink to="/registry" tag="button">
         <Button label="Neuen Account erstellen" class="registry-btn" link></Button>
       </RouterLink>
-      
+
     </div>
   </div>
 </template>
@@ -51,11 +52,11 @@ const clicked = () => {
 }
 
 
-  .login-btn{
-    width:50%;
-    margin-left: 25%;
-    margin-right: auto;
-  }
+.login-btn {
+  width: 50%;
+  margin-left: 25%;
+  margin-right: auto;
+}
 
   .registry-btn{
     width: 80%;
