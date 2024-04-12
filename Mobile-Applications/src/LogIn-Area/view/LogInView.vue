@@ -1,6 +1,15 @@
+<script>
+import LogIn from './../component/LogIn.vue'
+export default {
+  components: {
+    LogIn
+  }
+}
+</script>
+
 <template>
   <h1>Login</h1>
-  <RouterLink to="/chat" tag="button">
-    <button></button>
-  </RouterLink>
+  <LogIn></LogIn>
 </template>
+
+
