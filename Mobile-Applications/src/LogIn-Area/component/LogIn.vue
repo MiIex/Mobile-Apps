@@ -51,11 +51,16 @@ const clicked = () => {
 }
 
 
-.login-btn {
-  width: 50%;
-  margin-left: 25%;
-  margin-right: auto;
-}
+  .login-btn{
+    width:50%;
+    margin-left: 25%;
+    margin-right: auto;
+  }
+
+  .registry-btn{
+    width: 80%;
+    margin-left: 10%;
+  }
 
 label {
   color: black;
