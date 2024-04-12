@@ -2,23 +2,26 @@
   <div class="login-container">
     <div class="card flex flex-column md:flex-row gap-3">
       <InputGroup>
-          <InputGroupAddon>
-              <i class="pi pi-user"></i>
-          </InputGroupAddon>
-          <InputText placeholder="Username" />
+        <InputGroupAddon>
+          <i class="pi pi-user"></i>
+        </InputGroupAddon>
+        <InputText placeholder="Username" />
       </InputGroup>
       <InputGroup>
         <InputGroupAddon>
-              <i class="pi pi-key"></i>
-          </InputGroupAddon>
-        <Password v-model="value"  toggleMask :feedback="false" />
+          <i class="pi pi-key"></i>
+        </InputGroupAddon>
+        <Password v-model="value" placeholder="Passwort" toggleMask :feedback="false" />
       </InputGroup>
-      <div class="card flex justify-content-center">
+      <div class="flex align-items-center">
+        <label for="stay-signed-in" class="ml-2"> Eingeloggt bleiben </label>
+        <Checkbox v-model="checked" inputId="stay-signed-in" name="pizza" value={{checked}} />
+      </div>
+      <RouterLink to="/chat" tag="button">
+        <Button label="Log In" class="login-btn"></Button>
+      </RouterLink>
+      
     </div>
-  </div>
-    <RouterLink to="/chat" tag="button" >
-      <Button label="Log In" class="login-btn"></Button>
-    </RouterLink>
   </div>
 </template>
 
@@ -26,6 +29,7 @@
 import {ref} from 'vue'
 
 const value = ref(null);
+let checked = ref(false)
 </script>
 
 <style lang="scss">
@@ -41,6 +45,10 @@ const value = ref(null);
     width:50%;
     margin-left: 25%;
     margin-right: auto;
+  }
+
+  label{
+    color: black;
   }
 </style>
 
