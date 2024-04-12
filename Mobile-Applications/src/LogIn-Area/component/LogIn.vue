@@ -48,7 +48,6 @@ const clicked = () => {
   background-color: rgb(255, 255, 255);
 }
 
-
 .login-btn {
   width: 50%;
   margin-left: 25%;
