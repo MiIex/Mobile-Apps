@@ -9,19 +9,31 @@
       </InputGroup>
       <InputGroup>
         <InputGroupAddon>
+          <i class="pi pi-user"></i>
+        </InputGroupAddon>
+        <InputText placeholder="Nickname" />
+      </InputGroup>
+      <InputGroup>
+        <InputGroupAddon>
           <i class="pi pi-key"></i>
         </InputGroupAddon>
         <Password v-model="value" placeholder="Passwort" toggleMask :feedback="false" />
+      </InputGroup>
+      <InputGroup>
+        <InputGroupAddon>
+          <i class="pi pi-key"></i>
+        </InputGroupAddon>
+        <Password v-model="value" placeholder="Passwort wiederholen" toggleMask :feedback="false" />
       </InputGroup>
       <div class="flex align-items-center">
         <label for="stay-signed-in" class="ml-2"> Eingeloggt bleiben </label>
         <Checkbox v-model="checked" inputId="stay-signed-in" name="pizza" value={{checked}} />
       </div>
       <RouterLink to="/chat" tag="button">
-        <Button label="Log In" class="login-btn"></Button>
+        <Button label="Account erstellen" class="registry-btn"></Button>
       </RouterLink>
-      <RouterLink to="/registry" tag="button">
-        <Button label="Neuen Account erstellen" class="registry-btn" link></Button>
+      <RouterLink to="/login" tag="button">
+        <Button label="Zurück zum Login" class="login-btn" link></Button>
       </RouterLink>
       
     </div>
@@ -45,14 +57,9 @@ let checked = ref(false)
 
 
   .login-btn{
-    width:50%;
-    margin-left: 25%;
-    margin-right: auto;
-  }
-
-  .registry-btn{
     width: 80%;
     margin-left: 10%;
+    margin-right: auto;
   }
 
   label{
