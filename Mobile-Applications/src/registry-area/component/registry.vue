@@ -35,35 +35,34 @@
       <RouterLink to="/login" tag="button">
         <Button label="Zurück zum Login" class="login-btn" link></Button>
       </RouterLink>
-      
+
     </div>
   </div>
 </template>
 
 <script setup>
-import {ref} from 'vue'
+import { ref } from 'vue'
 
 const value = ref(null);
 let checked = ref(false)
 </script>
 
 <style lang="scss">
-  .login-container{
-    margin-left: auto;
-    margin-right: auto;
-    width: 85%;
-    background-color: rgb(255, 255, 255);
-  }
+.login-container {
+  margin-left: auto;
+  margin-right: auto;
+  width: 85%;
+  background-color: rgb(255, 255, 255);
+}
 
 
-  .login-btn{
-    width: 80%;
-    margin-left: 10%;
-    margin-right: auto;
-  }
+.login-btn {
+  width: 80%;
+  margin-left: 10%;
+  margin-right: auto;
+}
 
-  label{
-    color: black;
-  }
+label {
+  color: black;
+}
 </style>
-
