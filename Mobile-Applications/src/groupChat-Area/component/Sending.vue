@@ -1,10 +1,13 @@
 <template>
     <div class="container">
         <div class="card">
-            <!-- Hier kommt der Inhalt, der gescrollt werden kann -->
         </div>
         <div class="fixed-input">
-            <InputText class="input" type="text" v-model="value" />
+            <i class="pi pi-plus"></i>
+            <InputText type="text" v-model="value" style="height: 45px;" />
+            <i class="pi pi-send"></i>
+            <i class="pi pi-face-smile"></i>
+            <i class="pi pi-camera"></i>
         </div>
     </div>
 </template>
@@ -21,18 +24,37 @@ const value = ref(null);
 }
 
 .card {
-    /* Hier wird der Inhalt platziert, der gescrollt werden kann */
+    margin-top: 6em;
     max-height: 1000px;
-    /* Beispielhöhe */
     overflow-y: scroll;
 }
 
 .fixed-input {
     position: fixed;
     bottom: 20px;
-    /* Ändere diesen Wert, um die gewünschte Abstand zum unteren Rand anzupassen */
     left: 50%;
-    /* Optional: Zentriert das Eingabefeld horizontal */
     transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+}
+
+.pi-send {
+    margin-left: -30px;
+    font-size: 20px;
+}
+
+.pi-face-smile {
+    margin-left: -225px;
+    font-size: 20px;
+}
+
+.pi-camera {
+    font-size: 20px;
+    margin-left: 250px;
+}
+
+.pi-plus {
+    font-size: 20px;
+    margin-right: 20px;
 }
 </style>
