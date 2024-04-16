@@ -47,7 +47,7 @@ const value = ref(null);
 let checked = ref(false)
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .login-container{
     margin-left: auto;
     margin-right: auto;
@@ -55,6 +55,10 @@ let checked = ref(false)
     background-color: rgb(255, 255, 255);
   }
 
+  .registry-btn{
+    width: 80%;
+    margin-left: 10%;
+  }
 
   .login-btn{
     width: 80%;

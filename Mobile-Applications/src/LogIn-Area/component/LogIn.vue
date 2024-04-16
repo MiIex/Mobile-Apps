@@ -40,7 +40,7 @@ const clicked = () => {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .login-container {
   margin-left: auto;
   margin-right: auto;
