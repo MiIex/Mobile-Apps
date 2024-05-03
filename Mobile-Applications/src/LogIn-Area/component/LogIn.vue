@@ -48,6 +48,7 @@ export default {
       
       this.$store.commit('logIn', result)
       this.$router.push("/chat")
+      console.log(this.$store.state.token)
     }
   },
 }

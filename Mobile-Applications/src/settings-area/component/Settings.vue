@@ -1,22 +1,22 @@
 <template>
     <div class="settings-container">
-    <div class="card flex flex-column md:flex-row gap-3">
-        <div class="settings-div">
-            <b class="description">DarkMode</b>
-            <InputSwitch v-model="darkmodeChecked" class="margin-right"/>
-        </div>
-        <div class="settings-div">
-            <b class="description">Schriftgröße</b>
-            <Dropdown v-model="selectedTextSize" :options="textSize" optionLabel="name" class="settings-dropdown" />
-        </div>
-        <div class="settings-div">Hintergrund ändern
-            <Button class="settings-btn"></Button>
-        </div>
-        <div class="settings-div">Chatbox Farbe
-            <ColorPicker v-model="color" class="test"/>
+        <div class="card flex flex-column md:flex-row gap-3">
+            <div class="settings-div">
+                <b class="description">DarkMode</b>
+                <InputSwitch v-model="darkmodeChecked" @change="darkmode(darkmodeChecked)" class="margin-right" />
+            </div>
+            <div class="settings-div">
+                <b class="description">Schriftgröße</b>
+                <Dropdown v-model="selectedTextSize" :options="textSize" optionLabel="name" class="settings-dropdown" />
+            </div>
+            <div class="settings-div">Hintergrund ändern
+                <Button class="settings-btn"></Button>
+            </div>
+            <div class="settings-div">Chatbox Farbe
+                <ColorPicker v-model="color" class="test" />
+            </div>
         </div>
     </div>
-  </div>
 </template>
 
 <script setup>
@@ -36,15 +36,24 @@ const textSize = ref([
 const color = ref();
 </script>
 
+<script>
+export default {
+    methods: {
+        darkmode(darkmodeChecked) {
+            this.$store.commit('darkmode', darkmodeChecked)
+        }
+    },
+}</script>
+
 <style lang="scss" scoped>
 .settings-container {
-  margin-left: auto;
-  margin-right: auto;
-  width: 85%;
-  background-color: rgb(255, 255, 255);
+    margin-left: auto;
+    margin-right: auto;
+    width: 85%;
+    background-color: rgb(255, 255, 255);
 }
 
-.settings-div{
+.settings-div {
     width: 80%;
     margin-left: 10%;
     background-color: blue;
@@ -54,18 +63,18 @@ const color = ref();
     padding-right: 10px;
 }
 
-.description{
+.description {
     color: black;
-   
+
 }
-.settings-btn{
+
+.settings-btn {
     height: 32px;
     width: 22px;
 }
 
-.settings-dropdown{
+.settings-dropdown {
     height: 32px;
     width: 150px;
 }
-
 </style>

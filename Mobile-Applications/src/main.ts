@@ -22,13 +22,16 @@ import 'primevue/resources/themes/lara-dark-indigo/theme.css';
 const store = createStore({
     state () {
       return {
-        token: ""
+        token: "",
+        darkMode: false,
       }
     },
     mutations: {
       logIn(state, token){
         state.token = token.data.token;
-        console.log(token)
+      },
+      darkmode(state, toggle){
+        state.darkMode = toggle
       }
     },
     actions: {
