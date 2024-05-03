@@ -17,9 +17,9 @@
         <label for="stay-signed-in" class="ml-2"> Eingeloggt bleiben </label>
         <Checkbox v-model="checked" inputId="stay-signed-in" name="pizza" value={{checked}} />
       </div>
-      <RouterLink to="/chat" tag="button">
-        <Button @click="clicked" label="Log In" class="login-btn"></Button>
-      </RouterLink>
+      
+        <Button @click="logIn(username, password)" label="Log In" class="login-btn"></Button>
+    
       <RouterLink to="/registry" tag="button">
         <Button label="Neuen Account erstellen" class="registry-btn" link></Button>
       </RouterLink>
@@ -28,16 +28,29 @@
 </template>
 
 <script setup>
+import axios from 'axios';
 import { ref } from 'vue'
-
-const username = ref(null)
-const password = ref(null);
+var username = ref(null)
+var password = ref(null);
 let checked = ref(false);
+</script>
 
-const clicked = () => {
-  console.log(username.value);
-  console.log(password.value);
-};
+<script>
+export default {
+  methods: {
+    async logIn(username, password) {
+      let result = await axios.get("https://www2.hs-esslingen.de/~melcher/map/chat/api/?request=login", {
+        params: {
+          userid: username,
+          password: password
+        }
+      })
+      
+      this.$store.commit('logIn', result)
+      this.$router.push("/chat")
+    }
+  },
+}
 </script>
 
 <style lang="scss" scoped>
@@ -54,7 +67,7 @@ const clicked = () => {
   margin-right: auto;
 }
 
-.registry-btn{
+.registry-btn {
   width: 80%;
   margin-left: 10%;
 }
