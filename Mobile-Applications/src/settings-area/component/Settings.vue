@@ -7,13 +7,15 @@
             </div>
             <div class="settings-div">
                 <b class="description">Schriftgröße</b>
-                <Dropdown v-model="selectedTextSize" :options="textSize" optionLabel="name" class="settings-dropdown" />
+                <Dropdown v-model="selectedTextSize" @change="textsize" :options="textSize" optionLabel="name"
+                    class="settings-dropdown" />
             </div>
             <div class="settings-div">Hintergrund ändern
-                <Button class="settings-btn"></Button>
+                <FileUpload mode="basic" name="demo[]" accept="image/*" :maxFileSize="1000000" @upload="backgroundImage"
+                    :auto="false" chooseLabel="Browse" />
             </div>
             <div class="settings-div">Chatbox Farbe
-                <ColorPicker v-model="color" class="test" />
+                <ColorPicker v-model="color" format="hex" @change="chatboxColor" class="test" />
             </div>
         </div>
     </div>
@@ -23,6 +25,7 @@
 import InputSwitch from 'primevue/inputswitch';
 import Dropdown from 'primevue/dropdown';
 import ColorPicker from 'primevue/colorpicker';
+import FileUpload from 'primevue/fileupload';
 
 import { ref } from 'vue';
 
@@ -41,9 +44,22 @@ export default {
     methods: {
         darkmode(darkmodeChecked) {
             this.$store.commit('darkmode', darkmodeChecked)
+        },
+        textsize(selectedTextSize) {
+            this.$store.commit('textsize', selectedTextSize.value.name)
+            console.log(this.$store.state.textSize)
+        },
+        backgroundImage(file) {
+            this.$store.commit('backgroundImage', file);
+            console.log(this.$store.state.uploadedBackgroundImage)
+        },
+        chatboxColor(color) {
+            this.$store.commit('changecolor', color)
+            console.log(this.$store.state.chatColor.value)
         }
     },
-}</script>
+}
+</script>
 
 <style lang="scss" scoped>
 .settings-container {
