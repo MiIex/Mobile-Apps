@@ -20,31 +20,47 @@ import 'primevue/resources/themes/lara-dark-indigo/theme.css';
 
 
 const store = createStore({
-    state () {
-      return {
-        token: "",
-        darkMode: false,
-      }
+  state() {
+    return {
+      token: "",
+      darkMode: false,
+      textSize: "",
+      uploadedBackgroundImage: null,
+      chatColor: "",
+      status: "",
+    }
+  },
+  mutations: {
+    logIn(state, token) {
+      state.token = token.data.token;
     },
-    mutations: {
-      logIn(state, token){
-        state.token = token.data.token;
-      },
-      darkmode(state, toggle){
-        state.darkMode = toggle
-      }
+    darkmode(state, toggle) {
+      state.darkMode = toggle
     },
-    actions: {
-      register({commit}, data){
-        axios.get("https://www2.hs-esslingen.de/~melcher/map/chat/api/?request=register", {
-          params: data
-        })
+    textsize(state, size) {
+      state.textSize = size
+    },
+    backgroundImage(state, image) {
+      state.uploadedBackgroundImage = image
+    },
+    changecolor(state, color) {
+      state.chatColor = color
+    },
+    changeStatus(state, status) {
+      state.status = status
+    }
+  },
+  actions: {
+    register({ commit }, data) {
+      axios.get("https://www2.hs-esslingen.de/~melcher/map/chat/api/?request=register", {
+        params: data
+      })
         .then(response => {
           commit('logIn', response.data)
-         })
-      }
+        })
     }
-  })
+  }
+})
 
 
 const app = createApp(App)
