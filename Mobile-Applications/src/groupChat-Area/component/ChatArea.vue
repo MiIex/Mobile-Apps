@@ -2,6 +2,8 @@
     <template v-for="message in messages">
         <MessagesTransmitter 
         v-if="message.userhash == key"
+        :text="message.text"
+        :time="message.time"
         ></MessagesTransmitter>
         <MessagesRecipient v-else 
         :name="message.usernickname"

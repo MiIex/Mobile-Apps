@@ -40,6 +40,9 @@
       </InputGroup>
       <div v-if="$v.repeatPassword.$error" class="p-error">Password is required.</div>
       <Button type="submit" class="p-button p-button-primary">Submit</Button>
+      <RouterLink to="/login" tag="button">
+        <Button label="Zurück zum Login" class="registry-btn" link></Button>
+      </RouterLink>
     </form>
   </div>
 </template>
@@ -49,6 +52,12 @@ import { ref, computed } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
 import { required, minLength, maxLength, sameAs } from '@vuelidate/validators'
 import axios from 'axios';
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router';
+
+const store = useStore()
+const router = useRouter()
+
 var username = ref(null);
 var nickname = ref(null);
 var password = ref(null);
@@ -87,21 +96,17 @@ const submitForm = () => {
   const result = $v.value.$validate();
   result.then((res) => {
     if (res) {
-      console.log(this.$store.state.token)
+      register(username.value, nickname.value, fullname.value, password.value, repeatPassword.value)
     }
   }).catch((err) => {
     console.log(err);
   })
 };
-</script>
 
-<script>
- export default  {
-  methods: {
-    async registry(username, nickname, password, repeatPassword, fullname) {
-      console.log(password)
-      console.log(repeatPassword)
-      if (password === repeatPassword) {
+const register = async (username, nickname, fullname, password, repeatPassword ) => {
+  console.log("success")
+  console.log(username, nickname, fullname, password)
+  if (password === repeatPassword) {
         let result = await axios.get("https://www2.hs-esslingen.de/~melcher/map/chat/api/?request=register", {
           params: {
             userid: username,
@@ -111,13 +116,12 @@ const submitForm = () => {
           }
         })
 
-        this.$store.commit('logIn', result)
-        this.$router.push("/chat")
+        store.commit('logIn', result)
+        console.log(store.state.token)
+        router.push("/chat")
       } else {
         console.warn("passwörter stimmen nicht überein")
       }
-    }
-  },
 }
 </script>
 
