@@ -11,7 +11,6 @@ import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import Password from 'primevue/password';
 import ConfirmationService from 'primevue/confirmationservice';
-import axios from 'axios'
 
 import 'primevue/resources/primevue.min.css';
 import 'primeflex/primeflex.css';
@@ -49,18 +48,11 @@ export const store = createStore({
     },
     changeStatus(state, status) {
       state.status = status
+    },
+    logOut(state){
+      state.token = ""
     }
   },
-  actions: {
-    register({ commit }, data) {
-      axios.get("https://www2.hs-esslingen.de/~melcher/map/chat/api/?request=register", {
-        params: data
-      })
-        .then(response => {
-          commit('logIn', response.data)
-        })
-    }
-  }
 })
 
 

@@ -19,28 +19,37 @@ import { ref } from 'vue'
 import axios from 'axios';
 import { useStore } from 'vuex'
 import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
 const store = useStore()
+const router = useRouter()
 
 let key = store.state.token
 var messages = ref([])
 
 onMounted(() => {
     getMessages()
+    if(!store.state.token){
+        router.push("/login")
+    }
 })
 
 const getMessages = async () => {
-    let result = await axios.get("https://www2.hs-esslingen.de/~melcher/map/chat/api/?request=fetchmessages", {
+    let result = await axios.get("https://www2.hs-esslingen.de/~melcher/map/chat/api/?request=getmessages", {
         params: {
             token: store.state.token
         }
     }).catch(function (error) {
 
     })
-    let lastMessages = result.data.messages.slice(-5)
+    console.log(result.data.messages)
+    let lastMessages = result.data.messages.slice(-260)
+    console.warn(lastMessages)
     for (var message of lastMessages) {
-        messages.value.push({userhash: "sqlF6fJU", text: "hahaha"})
+        //messages.value.push({userhash: "VBB2mJqq", text: "hahaha"})
         messages.value.push({ userhash: message.userhash , text: message.text, usernickname: message.usernickname, time: message.time})
     }
+    console.log(messages.value)
         
 
 }
