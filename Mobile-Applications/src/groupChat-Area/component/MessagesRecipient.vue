@@ -1,12 +1,17 @@
 <template>
     <div class="message-container">
-        <span class="name">Hans</span>
-        <span class="text">Hallo</span>
-        <span class="timestamp">8:58</span>
+        <span class="name">{{ name }}</span>
+        <span class="text">{{ text }}</span>
+        <span class="timestamp">{{ time }}</span>
     </div>
 </template>
 
 <script setup>
+    const props = defineProps({
+        name: String,
+        text: String,
+        time: String,
+    })
 </script>
 
 <style scoped>

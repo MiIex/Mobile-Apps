@@ -1,11 +1,15 @@
 <template>
     <div class="message-container">
-        <span class="text">Hey</span>
-        <span class="timestamp">8:59</span>
+        <span class="text">{{text}}</span>
+        <span class="timestamp">{{ time }}</span>
     </div>
 </template>
 
 <script setup>
+ const props = defineProps({
+        text: String,
+        time: String,
+    })
 </script>
 
 <style scoped>
