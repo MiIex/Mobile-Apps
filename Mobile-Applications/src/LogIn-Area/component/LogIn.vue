@@ -17,9 +17,9 @@
         <label for="stay-signed-in" class="ml-2"> Eingeloggt bleiben </label>
         <Checkbox v-model="checked" inputId="stay-signed-in" name="pizza" value={{checked}} />
       </div>
-      
-        <Button @click="logIn(username, password)" label="Log In" class="login-btn"></Button>
-    
+
+      <Button @click="logIn(username, password)" label="Log In" class="login-btn"></Button>
+
       <RouterLink to="/registry" tag="button">
         <Button label="Neuen Account erstellen" class="registry-btn" link></Button>
       </RouterLink>
@@ -55,7 +55,7 @@ export default {
           alert("Der Benutzer oder das Passwort ist falsch")
         }
       })
-      
+
       this.$store.commit('logIn', result)
       this.$router.push("/chat")
       console.log(this.$store.state.token)
