@@ -19,7 +19,7 @@ import 'primeicons/primeicons.css';
 import 'primevue/resources/themes/lara-dark-indigo/theme.css';
 
 
-const store = createStore({
+export const store = createStore({
     state () {
       return {
         token: "",

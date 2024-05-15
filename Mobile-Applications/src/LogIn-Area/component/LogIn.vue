@@ -44,11 +44,22 @@ export default {
           userid: username,
           password: password
         }
+      }).catch(function (error){
+        if(error.response.status === 403){
+          alert("Bitte geben sie was ein")
+        }
+        if(error.response.status === 451){
+          alert("Der Benutzer muss eine HSE Login ID sein")
+        }
+        if(error.response.status === 455){
+          alert("Der Benutzer oder das Passwort ist falsch")
+        }
       })
       
       this.$store.commit('logIn', result)
       this.$router.push("/chat")
       console.log(this.$store.state.token)
+     
     }
   },
 }
