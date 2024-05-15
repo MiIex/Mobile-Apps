@@ -5,7 +5,7 @@
         <div class="fixed-input">
             <i class="pi pi-plus"></i>
             <InputText type="text" v-model="value" style="height: 45px;" />
-            <i class="pi pi-send"></i>
+            <i class="pi pi-send" @click="sendMessage(value.value)"></i>
             <i class="pi pi-face-smile"></i>
             <i class="pi pi-camera"></i>
         </div>
@@ -14,8 +14,24 @@
 
 <script setup>
 import { ref } from 'vue';
+import axios from 'axios';
+import { useStore } from 'vuex'
+
+const store = useStore()
 
 const value = ref(null);
+
+const sendMessage = async(message) => {
+    let result = await axios({
+        method: 'post',
+        url: "https://www2.hs-esslingen.de/~melcher/map/chat/api/",
+        data: {
+           // request: "postmessage",
+            token: store.state.token,
+            text: message
+        }
+    })
+}
 </script>
 
 <style scoped>

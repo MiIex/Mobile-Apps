@@ -27,6 +27,7 @@ import Dialog from 'primevue/dialog';
 import { ref } from "vue";
 import { useStore } from 'vuex';
 import { router } from '../../router.ts'
+import axios from "axios";
 
 const confirm = useConfirm();
 const visible = ref(false);
@@ -42,13 +43,27 @@ const confirmLogout = () => {
         rejectLabel: 'Abbrechen',
         acceptLabel: 'Save',
         accept: () => {
-            console.log("accept")
+            
+            
+            logout()
             router.push("/login")
         },
         reject: () => {
             console.log("reject")
         }
     });
+}
+
+const logout = async () => {
+    let result = await axios.get("https://www2.hs-esslingen.de/~melcher/map/chat/api/?request=logout", {
+        params: {
+            token: store.state.token
+        }
+    }).catch(function (error) {
+
+    })
+    console.log(store.state.token)
+    store.commit('logOut')
 }
 
 const saveStatus = () => {
