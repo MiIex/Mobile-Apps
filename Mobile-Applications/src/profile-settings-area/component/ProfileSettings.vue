@@ -1,22 +1,26 @@
 <template>
     <ConfirmDialog></ConfirmDialog>
     <div class="settings-container">
-        <div class="card flex flex-column md:flex-row gap-3">
-            <Button label="Profilbild ändern"></Button>
-            <Button label="Nickname ändern"></Button>
-            <Button label="Status setzen" @click="visible = true"></Button>
-            <Dialog v-model:visible="visible" modal header="Change Status" :style="{ width: '25rem' }">
-                <div class="flex align-items-center gap-3 mb-3">
-                    <label for="status" class="font-semibold w-6rem">Status</label>
-                    <InputText v-model="status" id="status" class="flex-auto" autocomplete="off" />
+        <Card>
+            <template #content>
+                <div class="card flex flex-column md:flex-row gap-3">
+                    <Button label="Profilbild ändern"></Button>
+                    <Button label="Nickname ändern"></Button>
+                    <Button label="Status setzen" @click="visible = true"></Button>
+                    <Dialog v-model:visible="visible" modal header="Change Status" :style="{ width: '25rem' }">
+                        <div class="flex align-items-center gap-3 mb-3">
+                            <label for="status" class="font-semibold w-6rem">Status</label>
+                            <InputText v-model="status" id="status" class="flex-auto" autocomplete="off" />
+                        </div>
+                        <div class="flex justify-content-end gap-2">
+                            <Button type="button" label="Cancel" severity="secondary" @click="visible = false"></Button>
+                            <Button type="button" label="Save" @click="saveStatus"></Button>
+                        </div>
+                    </Dialog>
+                    <Button label="Log Out" @click="confirmLogout()"></Button>
                 </div>
-                <div class="flex justify-content-end gap-2">
-                    <Button type="button" label="Cancel" severity="secondary" @click="visible = false"></Button>
-                    <Button type="button" label="Save" @click="saveStatus"></Button>
-                </div>
-            </Dialog>
-            <Button label="Log Out" @click="confirmLogout()"></Button>
-        </div>
+            </template>
+        </Card>
     </div>
 </template>
 
@@ -43,8 +47,8 @@ const confirmLogout = () => {
         rejectLabel: 'Abbrechen',
         acceptLabel: 'Save',
         accept: () => {
-            
-            
+
+
             logout()
             router.push("/login")
         },

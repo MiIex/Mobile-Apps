@@ -1,12 +1,10 @@
 <template>
     <div class="container">
-        <div class="card">
-        </div>
         <div class="fixed-input">
             <i class="pi pi-plus"></i>
-            <InputText type="text" v-model="value" style="height: 45px;" />
-            <i class="pi pi-send" @click="sendMessage(value.value)"></i>
             <i class="pi pi-face-smile"></i>
+            <InputText type="text" v-model="value" class="input-text" />
+            <i class="pi pi-send" @click="sendMessage(value.value)"></i>
             <i class="pi pi-camera"></i>
         </div>
     </div>
@@ -21,12 +19,11 @@ const store = useStore()
 
 const value = ref(null);
 
-const sendMessage = async(message) => {
+const sendMessage = async (message) => {
     let result = await axios({
         method: 'post',
         url: "https://www2.hs-esslingen.de/~melcher/map/chat/api/",
         data: {
-           // request: "postmessage",
             token: store.state.token,
             text: message
         }
@@ -39,38 +36,26 @@ const sendMessage = async(message) => {
     position: relative;
 }
 
-.card {
-    margin-top: 6em;
-    max-height: 1000px;
-    overflow-y: scroll;
-}
-
 .fixed-input {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
     display: flex;
     align-items: center;
+    padding: 1vh;
+    box-sizing: border-box;
 }
 
-.pi-send {
-    margin-left: -30px;
+.pi {
     font-size: 20px;
 }
 
-.pi-face-smile {
-    margin-left: -225px;
-    font-size: 20px;
+.input-text {
+    flex-grow: 1;
+    height: 6vh;
 }
 
-.pi-camera {
-    font-size: 20px;
-    margin-left: 250px;
-}
-
+.pi-send,
+.pi-camera,
+.pi-face-smile,
 .pi-plus {
-    font-size: 20px;
-    margin-right: 20px;
+    margin: 0 0.5vh;
 }
 </style>

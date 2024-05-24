@@ -1,15 +1,12 @@
 <template>
-    <template v-for="message in messages">
-        <MessagesTransmitter 
-        v-if="message.userhash == key"
-        :text="message.text"
-        :time="message.time"
-        ></MessagesTransmitter>
-        <MessagesRecipient v-else 
-        :name="message.usernickname"
-        :text="message.text"
-        :time="message.time"></MessagesRecipient>
-    </template>
+    <div class="messages-container">
+        <template v-for="message in messages">
+            <MessagesTransmitter v-if="message.userhash == key" :text="message.text" :time="message.time">
+            </MessagesTransmitter>
+            <MessagesRecipient v-else :name="message.usernickname" :text="message.text" :time="message.time">
+            </MessagesRecipient>
+        </template>
+    </div>
 </template>
 
 <script setup>
@@ -29,7 +26,7 @@ var messages = ref([])
 
 onMounted(() => {
     getMessages()
-    if(!store.state.token){
+    if (!store.state.token) {
         router.push("/login")
     }
 })
@@ -47,10 +44,15 @@ const getMessages = async () => {
     console.warn(lastMessages)
     for (var message of lastMessages) {
         //messages.value.push({userhash: "VBB2mJqq", text: "hahaha"})
-        messages.value.push({ userhash: message.userhash , text: message.text, usernickname: message.usernickname, time: message.time})
+        messages.value.push({ userhash: message.userhash, text: message.text, usernickname: message.usernickname, time: message.time })
     }
     console.log(messages.value)
-        
-
 }
 </script>
+
+<style scoped>
+.messages-container {
+    max-height: 90vh;
+    overflow-y: auto;
+}
+</style>

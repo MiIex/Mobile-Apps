@@ -4,6 +4,7 @@ import { createStore } from 'vuex'
 import App from './global/App.vue'
 import { router } from './router'
 import PrimeVue from 'primevue/config';
+import Card from 'primevue/card';
 import InputGroup from 'primevue/inputgroup';
 import InputGroupAddon from 'primevue/inputgroupaddon';
 import Checkbox from 'primevue/checkbox';
@@ -16,13 +17,14 @@ import 'primevue/resources/primevue.min.css';
 import 'primeflex/primeflex.css';
 import 'primeicons/primeicons.css';
 import 'primevue/resources/themes/lara-dark-indigo/theme.css';
+import 'primevue/resources/themes/md-light-deeppurple/theme.css';
 
 
 
 export const store = createStore({
   state() {
     return {
-      token: "",
+      token: "Jo98Xfd7",
       darkMode: false,
       textSize: "",
       uploadedBackgroundImage: null,
@@ -49,7 +51,7 @@ export const store = createStore({
     changeStatus(state, status) {
       state.status = status
     },
-    logOut(state){
+    logOut(state) {
       state.token = ""
     }
   },
@@ -62,6 +64,7 @@ app.use(PrimeVue)
 app.use(ConfirmationService);
 app.use(store)
 app.mount('#app')
+app.component('Card', Card)
 app.component('Button', Button)
 app.component('InputGroup', InputGroup)
 app.component('InputGroupAddon', InputGroupAddon)

@@ -7,24 +7,25 @@
 </template>
 
 <script setup>
-    const props = defineProps({
-        name: String,
-        text: String,
-        time: String,
-    })
+const props = defineProps({
+    name: String,
+    text: String,
+    time: String,
+})
 </script>
 
 <style scoped>
 .message-container {
     background-color: #075e54;
     padding: 0.5em;
-    width: 60%;
+    margin-bottom: 1em;
+    width: fit-content;
     border-radius: 15px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     overflow: auto;
-    max-height: 200px;
+    max-height: fit-content;
 }
 
 .name {
@@ -42,6 +43,6 @@
     align-self: flex-end;
     color: gray;
     font-size: 16px;
-    margin-top: -15px;
+    margin-top: px;
 }
 </style>

@@ -1,27 +1,27 @@
 <template>
-    <div class="settings-container">
-        <div class="card flex flex-column md:flex-row gap-3">
-            <div class="settings-div">
-                <b class="description">DarkMode</b>
+    <Card>
+        <template #content>
+            <Panel header="DarkMode">
                 <InputSwitch v-model="darkmodeChecked" @change="darkmode(darkmodeChecked)" class="margin-right" />
-            </div>
-            <div class="settings-div">
-                <b class="description">Schriftgröße</b>
+            </Panel>
+            <Panel header="Schriftgröße">
                 <Dropdown v-model="selectedTextSize" @change="textsize" :options="textSize" optionLabel="name"
                     class="settings-dropdown" />
-            </div>
-            <div class="settings-div">Hintergrund ändern
+            </Panel>
+            <Panel header="Hintergrund ändern">
                 <FileUpload mode="basic" name="demo[]" accept="image/*" :maxFileSize="1000000" @upload="backgroundImage"
                     :auto="false" chooseLabel="Browse" />
-            </div>
-            <div class="settings-div">Chatbox Farbe
+            </Panel>
+            <Panel header="Chatbox Farbe">
                 <ColorPicker v-model="color" format="hex" @change="chatboxColor" class="test" />
-            </div>
-        </div>
-    </div>
+            </Panel>
+        </template>
+    </Card>
 </template>
 
 <script setup>
+import Card from 'primevue/card';
+import Panel from 'primevue/panel';
 import InputSwitch from 'primevue/inputswitch';
 import Dropdown from 'primevue/dropdown';
 import ColorPicker from 'primevue/colorpicker';
@@ -62,35 +62,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.settings-container {
-    margin-left: auto;
-    margin-right: auto;
-    width: 85%;
-    background-color: rgb(255, 255, 255);
-}
-
-.settings-div {
-    width: 80%;
-    margin-left: 10%;
-    background-color: blue;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    padding-right: 10px;
-}
-
-.description {
-    color: black;
-
-}
-
-.settings-btn {
-    height: 32px;
-    width: 22px;
-}
-
 .settings-dropdown {
-    height: 32px;
+    height: 50px;
     width: 150px;
 }
 </style>
