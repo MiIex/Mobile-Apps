@@ -1,7 +1,7 @@
 <template>
     <template v-for="message in messages">
         <MessagesTransmitter 
-        v-if="message.userhash == key"
+        v-if="message.userhash == userhash"
         :text="message.text"
         :time="message.time"
         ></MessagesTransmitter>
@@ -24,7 +24,7 @@ import { useRouter } from 'vue-router';
 const store = useStore()
 const router = useRouter()
 
-let key = store.state.token
+let userhash = store.state.userhash
 var messages = ref([])
 
 onMounted(() => {
@@ -35,7 +35,7 @@ onMounted(() => {
 })
 
 const getMessages = async () => {
-    let result = await axios.get("https://www2.hs-esslingen.de/~melcher/map/chat/api/?request=getmessages", {
+    let result = await axios.get("https://www2.hs-esslingen.de/~melcher/map/chat/api/index.php/?request=getmessages", {
         params: {
             token: store.state.token
         }
@@ -43,13 +43,14 @@ const getMessages = async () => {
 
     })
     console.log(result.data.messages)
-    let lastMessages = result.data.messages.slice(-260)
+    let lastMessages = result.data.messages.slice(-20)
     console.warn(lastMessages)
     for (var message of lastMessages) {
         //messages.value.push({userhash: "VBB2mJqq", text: "hahaha"})
         messages.value.push({ userhash: message.userhash , text: message.text, usernickname: message.usernickname, time: message.time})
     }
     console.log(messages.value)
+    console.log(store.state.userhash)
         
 
 }

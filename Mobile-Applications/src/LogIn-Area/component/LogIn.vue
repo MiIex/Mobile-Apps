@@ -55,6 +55,7 @@ export default {
           alert("Der Benutzer oder das Passwort ist falsch")
         }
       })
+      console.log(result)
       console.log(this.$store.state.token)
       this.$store.commit('logIn', result)
       this.$router.push("/chat")
