@@ -1,5 +1,5 @@
 <template>
-    <div class="message-container">
+    <div :style="{ backgroundColor: chatBackgroundColor }" class="message-container">
         <span class="name">{{ name }}</span>
         <span class="text">{{ text }}</span>
         <span class="timestamp">{{ time }}</span>
@@ -7,16 +7,22 @@
 </template>
 
 <script setup>
+import { defineProps, computed } from 'vue';
+
 const props = defineProps({
     name: String,
     text: String,
     time: String,
-})
+});
+
+const chatBackgroundColor = computed(() => {
+    const storedColor = localStorage.getItem('chatColor');
+    return storedColor ? `#${storedColor}` : '#075e54'; // Default color if none set
+});
 </script>
 
 <style scoped>
 .message-container {
-    background-color: #075e54;
     padding: 0.5em;
     margin-bottom: 1em;
     width: fit-content;
