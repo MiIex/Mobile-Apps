@@ -28,11 +28,13 @@ export const store = createStore({
       uploadedBackgroundImage: null,
       chatColor: "",
       status: "",
+      userhash: ""
     }
   },
   mutations: {
     logIn(state, token) {
       state.token = token.data.token;
+      state.userhash = token.data.hash
     },
     darkmode(state, toggle) {
       state.darkMode = toggle
