@@ -6,6 +6,7 @@
 
 <script setup>
 import { usePrimeVue } from 'primevue/config';
+import { onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
 
 const store = useStore();
@@ -13,19 +14,18 @@ const PrimeVue = usePrimeVue();
 
 const storedTextSize = localStorage.getItem('textSize');
 const textSizeClass = store.getters.textSize;
+const darkmodeChecked = ref(localStorage.getItem('darkmode') === 'true');
 
-// Watcher, um Änderungen des Dark Mode im Store zu überwachen
-store.watch(() => store.state.isDarkMode, (newValue) => {
-    if (newValue) {
-        // Dark Mode ist aktiv
-        PrimeVue.changeTheme('md-light-deeppurple', 'lara-dark-indigo', 'theme-link', () => {
-            console.log('Theme changed to Dark');
-        });
-    } else {
-        // Dark Mode ist deaktiviert
-        PrimeVue.changeTheme('lara-dark-indigo', 'md-light-deeppurple', 'theme-link', () => {
-            console.log('Theme changed to Light');
-        });
-    }
-});
+onMounted(() => {
+    darkmode(darkmodeChecked.value);
+})
+
+function darkmode(isDarkMode) {
+    const newTheme = isDarkMode ? 'lara-dark-indigo' : 'md-light-deeppurple';
+    const oldTheme = isDarkMode ? 'md-light-deeppurple' : 'lara-dark-indigo';
+
+    PrimeVue.changeTheme(oldTheme, newTheme, 'theme-link', () => {
+        console.log(`Theme changed to ${newTheme}`);
+    });
+}
 </script>

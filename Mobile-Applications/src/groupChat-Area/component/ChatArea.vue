@@ -7,29 +7,29 @@
             </MessagesRecipient>
         </template>
     </div>
+    <div class="background-layer" :style="backgroundLayerStyle"></div>
 </template>
 
 <script setup>
-import MessagesRecipient from './../component/MessagesRecipient.vue'
-import MessagesTransmitter from './../component/MessagesTransmitter.vue'
-import { ref } from 'vue'
+import MessagesRecipient from './../component/MessagesRecipient.vue';
+import MessagesTransmitter from './../component/MessagesTransmitter.vue';
+import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
-import { useStore } from 'vuex'
-import { onMounted } from 'vue';
+import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 
-const store = useStore()
-const router = useRouter()
+const store = useStore();
+const router = useRouter();
 
-let key = store.state.token
-var messages = ref([])
+let key = store.state.token;
+var messages = ref([]);
 
 onMounted(() => {
-    getMessages()
+    getMessages();
     if (!store.state.token) {
-        router.push("/login")
+        router.push("/login");
     }
-})
+});
 
 const getMessages = async () => {
     let result = await axios.get("https://www2.hs-esslingen.de/~melcher/map/chat/api/?request=getmessages", {
@@ -37,22 +37,43 @@ const getMessages = async () => {
             token: store.state.token
         }
     }).catch(function (error) {
-
-    })
-    console.log(result.data.messages)
-    let lastMessages = result.data.messages.slice(-260)
-    console.warn(lastMessages)
-    for (var message of lastMessages) {
-        //messages.value.push({userhash: "VBB2mJqq", text: "hahaha"})
-        messages.value.push({ userhash: message.userhash, text: message.text, usernickname: message.usernickname, time: message.time })
+        console.error(error);
+    });
+    if (result && result.data && result.data.messages) {
+        console.log(result.data.messages);
+        let lastMessages = result.data.messages.slice(-260);
+        console.warn(lastMessages);
+        for (var message of lastMessages) {
+            messages.value.push({ userhash: message.userhash, text: message.text, usernickname: message.usernickname, time: message.time });
+        }
+        console.log(messages.value);
     }
-    console.log(messages.value)
-}
+};
+
+const backgroundImageUrl = ref(localStorage.getItem('backgroundImageUrl') || '');
+
+const backgroundLayerStyle = computed(() => ({
+    backgroundImage: `url(${backgroundImageUrl.value})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    opacity: 0.5
+}));
 </script>
 
 <style scoped>
 .messages-container {
     max-height: 90vh;
     overflow-y: auto;
+    position: relative;
+}
+
+.background-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.5;
 }
 </style>

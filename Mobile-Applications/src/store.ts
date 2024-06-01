@@ -10,6 +10,7 @@ export const store = createStore({
             chatColor: localStorage.getItem('chatColor') || "", // Initialisiere aus localStorage
             chatBackgroundColor: localStorage.getItem('chatBackgroundColor') || "#ffffff", // Initialisiere aus localStorage
             status: "",
+            uploadedProfileImage: null,
         }
     },
     mutations: {
@@ -25,6 +26,9 @@ export const store = createStore({
         },
         backgroundImage(state, image) {
             state.uploadedBackgroundImage = image;
+        },
+        profileImage(state, image) {
+            state.uploadedProfileImage = image;
         },
         changecolor(state, color) {
             state.chatColor = color;

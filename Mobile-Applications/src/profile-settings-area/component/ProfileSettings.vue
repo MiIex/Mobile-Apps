@@ -4,7 +4,13 @@
         <Card>
             <template #content>
                 <div :class="textSizeClass" class="card flex flex-column md:flex-row gap-3">
-                    <Button :class="textSizeClass" label="Profilbild ändern"></Button>
+                    <div class="profile-image-container">
+                        <img :src="profileImageUrl" class="profile-image" alt="Profile Image">
+                    </div>
+                    <Button :class="textSizeClass" label="Profilbild ändern">
+                        <FileUpload mode="basic" name="demo[]" accept="image/*" :maxFileSize="1000000" customUpload
+                            @select="profileImage" chooseLabel="Browse" />
+                    </Button>
                     <Button :class="textSizeClass" label="Nickname ändern"></Button>
                     <Button :class="textSizeClass" label="Status setzen" @click="visible = true"></Button>
                     <Dialog v-model:visible="visible" modal header="Change Status" :style="{ width: '25rem' }">
@@ -21,6 +27,9 @@
                     </Dialog>
                     <Button :class="textSizeClass" label="Log Out" @click="confirmLogout()"></Button>
                 </div>
+                <Panel :class="textSizeClass" class="status-container" header="Status">
+                    <p>{{ storedStatus }}</p>
+                </Panel>
             </template>
         </Card>
     </div>
@@ -34,6 +43,8 @@ import { ref, watch, onMounted } from "vue";
 import { useStore } from 'vuex';
 import { router } from '../../router.ts';
 import axios from "axios";
+import FileUpload from 'primevue/fileupload';
+import Panel from 'primevue/panel';
 
 const confirm = useConfirm();
 const visible = ref(false);
@@ -41,6 +52,9 @@ const status = ref("");
 const store = useStore();
 
 const textSizeClass = ref(store.getters.textSize);
+
+const profileImageUrl = ref(localStorage.getItem('profileImageUrl') || '');
+const storedStatus = ref(localStorage.getItem('status') || '');
 
 watch(() => store.getters.textSize, (newSize) => {
     textSizeClass.value = newSize;
@@ -64,6 +78,18 @@ const confirmLogout = () => {
     });
 };
 
+function profileImage(event) {
+    const file = event.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        profileImageUrl.value = e.target.result;
+        localStorage.setItem('profileImageUrl', profileImageUrl.value);
+        store.commit('profileImage', profileImageUrl.value);
+        console.log('Uploaded Profile Image URL:', profileImageUrl.value);
+    };
+    reader.readAsDataURL(file);
+}
+
 const logout = async () => {
     let result = await axios.get("https://www2.hs-esslingen.de/~melcher/map/chat/api/?request=logout", {
         params: {
@@ -78,6 +104,8 @@ const logout = async () => {
 
 const saveStatus = () => {
     console.log("Status saved:", status.value);
+    localStorage.setItem('status', status.value);
+    storedStatus.value = status.value;
     store.commit('changeStatus', status.value);
     console.log(store.state.status);
     visible.value = false;
@@ -120,5 +148,24 @@ onMounted(() => {
 .settings-dropdown {
     height: 32px;
     width: 150px;
+}
+
+.profile-image-container {
+    width: 100px;
+    height: 100px;
+    margin-left: 11vh;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+}
+
+.profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.status-container {
+    margin-top: 20px;
 }
 </style>

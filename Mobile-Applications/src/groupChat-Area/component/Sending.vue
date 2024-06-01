@@ -50,6 +50,7 @@ const sendMessage = async (message) => {
 .input-text {
     flex-grow: 1;
     height: 6vh;
+    width: 1vh;
 }
 
 .pi-send,

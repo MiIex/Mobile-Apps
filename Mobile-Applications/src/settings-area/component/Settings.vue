@@ -9,8 +9,8 @@
                     class="settings-dropdown" />
             </Panel>
             <Panel :class="textSizeClass" header="Hintergrund ändern">
-                <FileUpload mode="basic" name="demo[]" accept="image/*" :maxFileSize="1000000" @upload="backgroundImage"
-                    :auto="false" chooseLabel="Browse" />
+                <FileUpload mode="basic" name="demo[]" accept="image/*" :maxFileSize="1000000" customUpload
+                    @select="backgroundImage" chooseLabel="Browse" />
             </Panel>
             <Panel :class="textSizeClass" header="Chatbox Farbe">
                 <ColorPicker v-model="color" format="hex" @change="chatboxColor" class="test" />
@@ -27,7 +27,7 @@ import Dropdown from 'primevue/dropdown';
 import ColorPicker from 'primevue/colorpicker';
 import FileUpload from 'primevue/fileupload';
 
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted, computed } from 'vue';
 import { useStore } from 'vuex';
 import { usePrimeVue } from 'primevue/config';
 
@@ -35,7 +35,7 @@ const store = useStore();
 const PrimeVue = usePrimeVue();
 
 const selectedTextSize = ref();
-const darkmodeChecked = ref(localStorage.getItem('darkmode') === 'true'); // Initialize from localStorage
+const darkmodeChecked = ref(localStorage.getItem('darkmode') === 'true');
 const textSize = ref([
     { name: 'small', code: 's' },
     { name: 'medium', code: 'm' },
@@ -43,6 +43,7 @@ const textSize = ref([
 ]);
 const color = ref();
 const textSizeClass = ref(store.getters.textSize);
+const backgroundImageUrl = ref(localStorage.getItem('backgroundImageUrl') || ''); // Neu: URL des Hintergrundbilds
 
 watch(() => store.getters.textSize, (newSize) => {
     textSizeClass.value = newSize;
@@ -51,7 +52,7 @@ watch(() => store.getters.textSize, (newSize) => {
 function darkmode(isDarkMode) {
     const newTheme = isDarkMode ? 'lara-dark-indigo' : 'md-light-deeppurple';
     const oldTheme = isDarkMode ? 'md-light-deeppurple' : 'lara-dark-indigo';
-    
+
     PrimeVue.changeTheme(oldTheme, newTheme, 'theme-link', () => {
         console.log(`Theme changed to ${newTheme}`);
     });
@@ -70,9 +71,16 @@ function textsize() {
     }
 }
 
-function backgroundImage(file) {
-    store.commit('backgroundImage', file);
-    console.log(store.state.uploadedBackgroundImage);
+function backgroundImage(event) {
+    const file = event.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        backgroundImageUrl.value = e.target.result;
+        localStorage.setItem('backgroundImageUrl', backgroundImageUrl.value); // Bild-URL im LocalStorage speichern
+        store.commit('backgroundImage', backgroundImageUrl.value);
+        console.log('Uploaded Background Image URL:', backgroundImageUrl.value);
+    };
+    reader.readAsDataURL(file);
 }
 
 function chatboxColor(color) {
