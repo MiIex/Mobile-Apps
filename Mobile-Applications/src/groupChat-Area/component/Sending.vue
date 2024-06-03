@@ -5,7 +5,7 @@
         <div class="fixed-input">
             <i class="pi pi-plus"></i>
             <InputText type="text" v-model="value" style="height: 45px;" />
-            <i class="pi pi-send" @click="sendMessage(value.value, store.state.token)"></i>
+            <i class="pi pi-send" @click="sendMessage(store.state.token)"></i>
             <i class="pi pi-face-smile"></i>
             <i class="pi pi-camera"></i>
         </div>
@@ -21,13 +21,12 @@ const store = useStore()
 
 const value = ref(null);
 
-const sendMessage = (message, token) => {
+const sendMessage = (token) => {
     console.warn("A", token)
     console.log(value.value)
     console.log(token)
-    console.log(message)
     return axios.post("https://www2.hs-esslingen.de/~melcher/map/chat/api/index.php/", 
-    {request:"sendmessage",
+    {request:"postmessage",
     token:token,
     text:value.value})
    
