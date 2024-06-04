@@ -45,20 +45,22 @@ onMounted(() => {
 });
 
 const loadMessages = async () => {
-    let result = await axios.get("https://www2.hs-esslingen.de/~melcher/map/chat/api/index.php/?request=getmessages", {
+    let result = await axios.get("https://www2.hs-esslingen.de/~melcher/map/chat/api/", {
         params: {
-            token: store.state.token
-        }
+            token: store.state.token,
+            request: "getmessages",
+            timestamp: Date.now()
+        },
+        
     }).catch(function (error) {
 
     })
+    console.log(result)
     messages.value = []
     let lastMessages = result.data.messages.slice(shownmessages)
-    console.log(result.data.messages)
     for (var message of lastMessages) {
         messages.value.push({ userhash: message.userhash, text: message.text, usernickname: message.usernickname, time: message.time })
     }
-    console.warn(messages)
 }
 
 const getMessages = async () => {
@@ -69,7 +71,7 @@ const getMessages = async () => {
     }).catch(function (error) {
 
     })
-    
+
     messages.value = []
     shownmessages = shownmessages - 5;
     let lastMessages = result.data.messages.slice(shownmessages)
@@ -119,7 +121,7 @@ const backgroundLayerStyle = computed(() => ({
     background-color: #1f2937;
 }
 
-.chat-area{
+.chat-area {
     margin-top: 60px;
 }
 
@@ -131,9 +133,9 @@ const backgroundLayerStyle = computed(() => ({
 
 .load-more {
     height: 20px;
-    
+
     margin: auto;
-    display:block;
+    display: block;
     margin-bottom: 10px;
 }
 </style>
