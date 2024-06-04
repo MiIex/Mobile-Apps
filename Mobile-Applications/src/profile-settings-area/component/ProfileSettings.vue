@@ -11,7 +11,6 @@
                         <FileUpload mode="basic" name="demo[]" accept="image/*" :maxFileSize="1000000" customUpload
                             @select="profileImage" chooseLabel="Browse" />
                     </Button>
-                    <Button label="Nickname ändern"></Button>
                     <Button label="Status setzen" @click="visible = true"></Button>
                     <Dialog v-model:visible="visible" modal header="Change Status" :style="{ width: '25rem' }">
                         <div class="flex align-items-center gap-3 mb-3">
@@ -24,6 +23,8 @@
                         </div>
                     </Dialog>
                     <Button label="Log Out" @click="confirmLogout()"></Button>
+                    <Button label="Deregister" @click="confirmDeregister()"></Button>
+
                 </div>
                 <Panel class="status-container" header="Status">
                     <p>{{ storedStatus }}</p>
@@ -60,7 +61,7 @@ const confirmLogout = () => {
         icon: 'pi pi-exclamation-triangle',
         rejectClass: 'p-button-secondary p-button-outlined',
         rejectLabel: 'Abbrechen',
-        acceptLabel: 'Save',
+        acceptLabel: 'Bestätigen',
         accept: () => {
             logout();
             router.push("/login");
@@ -69,6 +70,48 @@ const confirmLogout = () => {
             console.log("reject");
         }
     });
+};
+
+const logout = async () => {
+    let result = await axios.get("https://www2.hs-esslingen.de/~melcher/map/chat/api/index.php/?request=logout", {
+        params: {
+            token: store.state.token
+        }
+    }).catch(function (error) {
+        // Handle error
+    });
+    console.log(store.state.token);
+    store.commit('logOut');
+};
+
+const confirmDeregister = () => {
+    confirm.require({
+        message: 'Wollen sie den Account deaktivieren?',
+        header: 'Bestätigung',
+        icon: 'pi pi-exclamation-triangle',
+        rejectClass: 'p-button-secondary p-button-outlined',
+        rejectLabel: 'Abbrechen',
+        acceptLabel: 'Bestätigen',
+        accept: () => {
+            deregister();
+            router.push("/login");
+        },
+        reject: () => {
+            console.log("reject");
+        }
+    });
+};
+
+const deregister = async () => {
+    let result = await axios.get("https://www2.hs-esslingen.de/~melcher/map/chat/api/index.php/?request=deregister", {
+        params: {
+            token: store.state.token
+        }
+    }).catch(function (error) {
+        // Handle error
+    });
+    console.log(store.state.token);
+    store.commit('logOut');
 };
 
 function profileImage(event) {
@@ -82,18 +125,6 @@ function profileImage(event) {
     };
     reader.readAsDataURL(file);
 }
-
-const logout = async () => {
-    let result = await axios.get("https://www2.hs-esslingen.de/~melcher/map/chat/api/?request=logout", {
-        params: {
-            token: store.state.token
-        }
-    }).catch(function (error) {
-        // Handle error
-    });
-    console.log(store.state.token);
-    store.commit('logOut');
-};
 
 const saveStatus = () => {
     console.log("Status saved:", status.value);
