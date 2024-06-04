@@ -1,22 +1,37 @@
 <template>
     <ConfirmDialog></ConfirmDialog>
-    <div class="settings-container">
-        <div class="card flex flex-column md:flex-row gap-3">
-            <Button label="Profilbild ändern"></Button>
-            <Button label="Nickname ändern"></Button>
-            <Button label="Status setzen" @click="visible = true"></Button>
-            <Dialog v-model:visible="visible" modal header="Change Status" :style="{ width: '25rem' }">
-                <div class="flex align-items-center gap-3 mb-3">
-                    <label for="status" class="font-semibold w-6rem">Status</label>
-                    <InputText v-model="status" id="status" class="flex-auto" autocomplete="off" />
+    <div :class="[textSizeClass, 'settings-container']">
+        <Card>
+            <template #content>
+                <div :class="textSizeClass" class="card flex flex-column md:flex-row gap-3">
+                    <div class="profile-image-container">
+                        <img :src="profileImageUrl" class="profile-image" alt="Profile Image">
+                    </div>
+                    <Button :class="textSizeClass" label="Profilbild ändern">
+                        <FileUpload mode="basic" name="demo[]" accept="image/*" :maxFileSize="1000000" customUpload
+                            @select="profileImage" chooseLabel="Browse" />
+                    </Button>
+                    <Button :class="textSizeClass" label="Nickname ändern"></Button>
+                    <Button :class="textSizeClass" label="Status setzen" @click="visible = true"></Button>
+                    <Dialog v-model:visible="visible" modal header="Change Status" :style="{ width: '25rem' }">
+                        <div :class="textSizeClass" class="flex align-items-center gap-3 mb-3">
+                            <label for="status" class="font-semibold w-6rem">Status</label>
+                            <InputText v-model="status" id="status" :class="textSizeClass, flex - auto"
+                                autocomplete="off" />
+                        </div>
+                        <div class="flex justify-content-end gap-2">
+                            <Button type="button" :class="textSizeClass" label="Cancel" severity="secondary"
+                                @click="visible = false"></Button>
+                            <Button type="button" :class="textSizeClass" label="Save" @click="saveStatus"></Button>
+                        </div>
+                    </Dialog>
+                    <Button :class="textSizeClass" label="Log Out" @click="confirmLogout()"></Button>
                 </div>
-                <div class="flex justify-content-end gap-2">
-                    <Button type="button" label="Cancel" severity="secondary" @click="visible = false"></Button>
-                    <Button type="button" label="Save" @click="saveStatus"></Button>
-                </div>
-            </Dialog>
-            <Button label="Log Out" @click="confirmLogout()"></Button>
-        </div>
+                <Panel :class="textSizeClass" class="status-container" header="Status">
+                    <p>{{ storedStatus }}</p>
+                </Panel>
+            </template>
+        </Card>
     </div>
 </template>
 
@@ -24,15 +39,26 @@
 import { useConfirm } from "primevue/useconfirm";
 import ConfirmDialog from 'primevue/confirmdialog';
 import Dialog from 'primevue/dialog';
-import { ref } from "vue";
+import { ref, watch, onMounted } from "vue";
 import { useStore } from 'vuex';
-import { router } from '../../router.ts'
+import { router } from '../../router.ts';
 import axios from "axios";
+import FileUpload from 'primevue/fileupload';
+import Panel from 'primevue/panel';
 
 const confirm = useConfirm();
 const visible = ref(false);
 const status = ref("");
 const store = useStore();
+
+const textSizeClass = ref(store.getters.textSize);
+
+const profileImageUrl = ref(localStorage.getItem('profileImageUrl') || '');
+const storedStatus = ref(localStorage.getItem('status') || '');
+
+watch(() => store.getters.textSize, (newSize) => {
+    textSizeClass.value = newSize;
+});
 
 const confirmLogout = () => {
     confirm.require({
@@ -43,15 +69,25 @@ const confirmLogout = () => {
         rejectLabel: 'Abbrechen',
         acceptLabel: 'Save',
         accept: () => {
-            
-            
-            logout()
-            router.push("/login")
+            logout();
+            router.push("/login");
         },
         reject: () => {
-            console.log("reject")
+            console.log("reject");
         }
     });
+};
+
+function profileImage(event) {
+    const file = event.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        profileImageUrl.value = e.target.result;
+        localStorage.setItem('profileImageUrl', profileImageUrl.value);
+        store.commit('profileImage', profileImageUrl.value);
+        console.log('Uploaded Profile Image URL:', profileImageUrl.value);
+    };
+    reader.readAsDataURL(file);
 }
 
 const logout = async () => {
@@ -60,18 +96,27 @@ const logout = async () => {
             token: store.state.token
         }
     }).catch(function (error) {
-
-    })
-    console.log(store.state.token)
-    store.commit('logOut')
-}
+        // Handle error
+    });
+    console.log(store.state.token);
+    store.commit('logOut');
+};
 
 const saveStatus = () => {
     console.log("Status saved:", status.value);
-    store.commit('changeStatus', status.value)
-    console.log(store.state.status)
+    localStorage.setItem('status', status.value);
+    storedStatus.value = status.value;
+    store.commit('changeStatus', status.value);
+    console.log(store.state.status);
     visible.value = false;
-}
+};
+
+onMounted(() => {
+    const storedSize = localStorage.getItem('textSize');
+    if (storedSize) {
+        store.commit('textsize', storedSize);
+    }
+});
 </script>
 
 <style lang="scss" scoped>
@@ -79,7 +124,6 @@ const saveStatus = () => {
     margin-left: auto;
     margin-right: auto;
     width: 85%;
-    background-color: rgb(255, 255, 255);
 }
 
 .settings-div {
@@ -94,7 +138,6 @@ const saveStatus = () => {
 
 .description {
     color: black;
-
 }
 
 .settings-btn {
@@ -105,5 +148,24 @@ const saveStatus = () => {
 .settings-dropdown {
     height: 32px;
     width: 150px;
+}
+
+.profile-image-container {
+    width: 100px;
+    height: 100px;
+    margin-left: 11vh;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+}
+
+.profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.status-container {
+    margin-top: 20px;
 }
 </style>

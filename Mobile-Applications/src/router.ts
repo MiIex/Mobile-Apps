@@ -6,6 +6,7 @@ import RegistryView from './registry-area/view/registryView.vue'
 import SettingView from './settings-area/view/SettingView.vue'
 import GroupChatView from './groupChat-Area/view/GroupChatView.vue'
 import ProfileSettingView from './profile-settings-area/view/ProfileSettingView.vue'
+import test from './test.vue'
 
 const routes = [
   { path: '/', redirect: '/login' },
@@ -13,8 +14,9 @@ const routes = [
   { path: '/chat', component: ChatView },
   { path: '/registry', component: RegistryView },
   { path: '/groupchat', component: GroupChatView },
-  { path: '/settings', component: SettingView},
-  { path: '/profilesettings', component: ProfileSettingView}
+  { path: '/settings', component: SettingView },
+  { path: '/profilesettings', component: ProfileSettingView },
+  { path: '/test', component: test }
 ]
 export const router = createRouter({
   history: createWebHistory(),

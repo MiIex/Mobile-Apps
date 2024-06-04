@@ -1,96 +1,108 @@
 <template>
-    <div class="settings-container">
-        <div class="card flex flex-column md:flex-row gap-3">
-            <div class="settings-div">
-                <b class="description">DarkMode</b>
+    <Card :class="textSizeClass">
+        <template #content>
+            <Panel :class="textSizeClass" header="DarkMode">
                 <InputSwitch v-model="darkmodeChecked" @change="darkmode(darkmodeChecked)" class="margin-right" />
-            </div>
-            <div class="settings-div">
-                <b class="description">Schriftgröße</b>
+            </Panel>
+            <Panel :class="textSizeClass" header="Schriftgröße">
                 <Dropdown v-model="selectedTextSize" @change="textsize" :options="textSize" optionLabel="name"
                     class="settings-dropdown" />
-            </div>
-            <div class="settings-div">Hintergrund ändern
-                <FileUpload mode="basic" name="demo[]" accept="image/*" :maxFileSize="1000000" @upload="backgroundImage"
-                    :auto="false" chooseLabel="Browse" />
-            </div>
-            <div class="settings-div">Chatbox Farbe
+            </Panel>
+            <Panel :class="textSizeClass" header="Hintergrund ändern">
+                <FileUpload mode="basic" name="demo[]" accept="image/*" :maxFileSize="1000000" customUpload
+                    @select="backgroundImage" chooseLabel="Browse" />
+            </Panel>
+            <Panel :class="textSizeClass" header="Chatbox Farbe">
                 <ColorPicker v-model="color" format="hex" @change="chatboxColor" class="test" />
-            </div>
-        </div>
-    </div>
+            </Panel>
+        </template>
+    </Card>
 </template>
 
 <script setup>
+import Card from 'primevue/card';
+import Panel from 'primevue/panel';
 import InputSwitch from 'primevue/inputswitch';
 import Dropdown from 'primevue/dropdown';
 import ColorPicker from 'primevue/colorpicker';
 import FileUpload from 'primevue/fileupload';
 
-import { ref } from 'vue';
+import { ref, watch, onMounted, computed } from 'vue';
+import { useStore } from 'vuex';
+import { usePrimeVue } from 'primevue/config';
 
-const darkmodeChecked = ref(false);
+const store = useStore();
+const PrimeVue = usePrimeVue();
+
 const selectedTextSize = ref();
+const darkmodeChecked = ref(localStorage.getItem('darkmode') === 'true');
 const textSize = ref([
     { name: 'small', code: 's' },
     { name: 'medium', code: 'm' },
     { name: 'large', code: 'l' },
 ]);
 const color = ref();
+const textSizeClass = ref(store.getters.textSize);
+const backgroundImageUrl = ref(localStorage.getItem('backgroundImageUrl') || ''); // Neu: URL des Hintergrundbilds
+
+watch(() => store.getters.textSize, (newSize) => {
+    textSizeClass.value = newSize;
+});
+
+function darkmode(isDarkMode) {
+    const newTheme = isDarkMode ? 'lara-dark-indigo' : 'md-light-deeppurple';
+    const oldTheme = isDarkMode ? 'md-light-deeppurple' : 'lara-dark-indigo';
+
+    PrimeVue.changeTheme(oldTheme, newTheme, 'theme-link', () => {
+        console.log(`Theme changed to ${newTheme}`);
+    });
+
+    store.commit('darkmode', isDarkMode);
+    localStorage.setItem('darkmode', isDarkMode);
+}
+
+function textsize() {
+    if (selectedTextSize.value) {
+        const newTextSize = selectedTextSize.value.name + '-text';
+        store.commit('textsize', newTextSize);
+        console.log('Neue Textgröße:', store.state.textSize);
+    } else {
+        console.log('selectedTextSize is undefined');
+    }
+}
+
+function backgroundImage(event) {
+    const file = event.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        backgroundImageUrl.value = e.target.result;
+        localStorage.setItem('backgroundImageUrl', backgroundImageUrl.value); // Bild-URL im LocalStorage speichern
+        store.commit('backgroundImage', backgroundImageUrl.value);
+        console.log('Uploaded Background Image URL:', backgroundImageUrl.value);
+    };
+    reader.readAsDataURL(file);
+}
+
+function chatboxColor(color) {
+    store.commit('changecolor', color);
+    console.log(color.value);
+    localStorage.setItem('chatColor', color.value); // Speichere den Hex-Wert ohne das '#'
+}
+
+onMounted(() => {
+    const storedSize = localStorage.getItem('textSize');
+    if (storedSize) {
+        store.commit('textsize', storedSize);
+    }
+
+    // Apply the saved dark mode theme on mount
+    darkmode(darkmodeChecked.value);
+});
 </script>
 
-<script>
-export default {
-    methods: {
-        darkmode(darkmodeChecked) {
-            this.$store.commit('darkmode', darkmodeChecked)
-        },
-        textsize(selectedTextSize) {
-            this.$store.commit('textsize', selectedTextSize.value.name)
-            console.log(this.$store.state.textSize)
-        },
-        backgroundImage(file) {
-            this.$store.commit('backgroundImage', file);
-            console.log(this.$store.state.uploadedBackgroundImage)
-        },
-        chatboxColor(color) {
-            this.$store.commit('changecolor', color)
-            console.log(this.$store.state.chatColor.value)
-        }
-    },
-}
-</script>
-
-<style lang="scss" scoped>
-.settings-container {
-    margin-left: auto;
-    margin-right: auto;
-    width: 85%;
-    background-color: rgb(255, 255, 255);
-}
-
-.settings-div {
-    width: 80%;
-    margin-left: 10%;
-    background-color: blue;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    padding-right: 10px;
-}
-
-.description {
-    color: black;
-
-}
-
-.settings-btn {
-    height: 32px;
-    width: 22px;
-}
-
+<style lang="css" scoped>
 .settings-dropdown {
-    height: 32px;
+    height: 50px;
     width: 150px;
 }
 </style>

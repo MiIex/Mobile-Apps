@@ -1,0 +1,14 @@
+.small-text,
+.small-text * {
+    font-size: 14px !important;
+}
+
+.medium-text,
+.medium-text * {
+    font-size: 18px !important;
+}
+
+.large-text,
+.large-text * {
+    font-size: 22px !important;
+}
