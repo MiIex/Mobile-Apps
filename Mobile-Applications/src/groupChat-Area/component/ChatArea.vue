@@ -6,7 +6,7 @@
             </RouterLink>
             <h2>Groupchat</h2>
         </div>
-        <div class="chat-area">
+        <ScrollPanel class="chat-area">
             <button @click="getMessages()" class="load-more">Mehr Nachrichten</button>
             <template v-for="message in messages">
                 <MessagesTransmitter v-if="message.userhash == userhash" :text="message.text" :time="message.time">
@@ -14,7 +14,7 @@
                 <MessagesRecipient v-else :name="message.usernickname" :text="message.text" :time="message.time">
                 </MessagesRecipient>
             </template>
-        </div>
+        </ScrollPanel>
     </div>
     <div class="background-layer" :style="backgroundLayerStyle"></div>
 </template>
@@ -22,6 +22,7 @@
 <script setup>
 import MessagesRecipient from './../component/MessagesRecipient.vue';
 import MessagesTransmitter from './../component/MessagesTransmitter.vue';
+import ScrollPanel from 'primevue/scrollpanel';
 import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 import { useStore } from 'vuex';
@@ -33,7 +34,7 @@ const router = useRouter();
 let key = store.state.token;
 let userhash = store.state.userhash
 let messages = ref([]);
-var shownmessages = 0
+var shownmessages = -3
 
 onMounted(() => {
     loadMessages();
@@ -50,7 +51,7 @@ const loadMessages = async () => {
     }).catch(function (error) {
 
     })
-    let lastMessages = result.data.messages.slice(-5)
+    let lastMessages = result.data.messages.slice(-8)
     for (var message of lastMessages) {
         messages.value.push({ userhash: message.userhash, text: message.text, usernickname: message.usernickname, time: message.time })
     }
