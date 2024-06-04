@@ -10,30 +10,31 @@ export default {
 </script>
 
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, computed } from 'vue';
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router';
 
 const router = useRouter()
 const store = useStore()
+const textSizeClass = computed(() => store.getters.textSize);
 
 onMounted(() => {
-    if (!store.state.token) {
-        router.push("/login")
-    }
+  if (!store.state.token) {
+    router.push("/login")
+  }
 })
 </script>
 <template>
-    <h1>Einstellungen</h1>
-    <Settings></Settings>
-    <Navigation class="bar"></Navigation>
+  <h1>Einstellungen</h1>
+  <Settings></Settings>
+  <Navigation class="bar"></Navigation>
 
 </template>
 
 <style scoped>
-.bar{
-    position: absolute;
-    width: 97%;
-    bottom: 10px
+.bar {
+  position: fixed;
+  width: 97%;
+  bottom: 10px
 }
 </style>

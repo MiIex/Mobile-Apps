@@ -8,7 +8,7 @@ export const store = createStore({
             textSize: localStorage.getItem('textSize') || "medium-text", // Initialisiere aus localStorage
             uploadedBackgroundImage: null,
             chatColor: localStorage.getItem('chatColor') || "", // Initialisiere aus localStorage
-            chatBackgroundColor: localStorage.getItem('chatBackgroundColor') || "#ffffff", // Initialisiere aus localStorage
+            selfChatColor: localStorage.getItem('selfChatColor') || "",
             status: "",
             uploadedProfileImage: null,
             userhash: ""
@@ -36,9 +36,9 @@ export const store = createStore({
             state.chatColor = color;
             localStorage.setItem('chatColor', color);
         },
-        changeBackgroundColor(state, color) {
-            state.chatBackgroundColor = color;
-            localStorage.setItem('chatBackgroundColor', color);
+        selfChangecolor(state, color) {
+            state.selfChatColor = color;
+            localStorage.setItem('selfChatColor', color);
         },
         changeStatus(state, status) {
             state.status = status;
