@@ -1,5 +1,5 @@
 <template>
-    <Card :class="textSizeClass">
+    <Card :class="textSizeClass" class="container">
         <template #content>
             <Panel :class="textSizeClass" header="DarkMode">
                 <InputSwitch v-model="darkmodeChecked" @change="darkmode(darkmodeChecked)" class="margin-right" />
@@ -14,6 +14,9 @@
             </Panel>
             <Panel :class="textSizeClass" header="Chatbox Farbe">
                 <ColorPicker v-model="color" format="hex" @change="chatboxColor" class="test" />
+            </Panel>
+            <Panel :class="textSizeClass" header="eigene Chatbox Farbe">
+                <ColorPicker v-model="selfColor" format="hex" @change="selfChatboxColor" class="test" />
             </Panel>
         </template>
     </Card>
@@ -42,6 +45,7 @@ const textSize = ref([
     { name: 'large', code: 'l' },
 ]);
 const color = ref();
+const selfColor = ref();
 const textSizeClass = ref(store.getters.textSize);
 const backgroundImageUrl = ref(localStorage.getItem('backgroundImageUrl') || ''); // Neu: URL des Hintergrundbilds
 
@@ -89,6 +93,12 @@ function chatboxColor(color) {
     localStorage.setItem('chatColor', color.value); // Speichere den Hex-Wert ohne das '#'
 }
 
+function selfChatboxColor(color) {
+    store.commit('selfChangecolor', color);
+    console.log(color.value);
+    localStorage.setItem('selfChatColor', color.value); // Speichere den Hex-Wert ohne das '#'
+}
+
 onMounted(() => {
     const storedSize = localStorage.getItem('textSize');
     if (storedSize) {
@@ -105,4 +115,6 @@ onMounted(() => {
     height: 50px;
     width: 150px;
 }
+
+.container {}
 </style>
