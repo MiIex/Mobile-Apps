@@ -3,7 +3,7 @@ import { createStore } from 'vuex';
 export const store = createStore({
     state() {
         return {
-            token: "Jo98Xfd7",
+            token: "",
             darkMode: false,
             textSize: localStorage.getItem('textSize') || "medium-text", // Initialisiere aus localStorage
             uploadedBackgroundImage: null,
@@ -17,7 +17,7 @@ export const store = createStore({
     mutations: {
         logIn(state, token) {
             state.token = token.data.token;
-            state.userhash = token.data.userhash
+            state.userhash = token.data.hash
         },
         darkmode(state, toggle) {
             state.darkMode = toggle;

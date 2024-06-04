@@ -4,7 +4,7 @@
             <i class="pi pi-plus"></i>
             <i class="pi pi-face-smile"></i>
             <InputText type="text" v-model="value" style="height: 45px;" />
-            <i class="pi pi-send" @click="sendMessage(value.value)"></i>
+            <i class="pi pi-send" @click="sendMessage(store.state.token)"></i>
             <i class="pi pi-camera"></i>
         </div>
     </div>

@@ -8,7 +8,7 @@
         <h2>Groupchat</h2>
     </div>
         <template v-for="message in messages">
-            <MessagesTransmitter v-if="message.userhash == key" :text="message.text" :time="message.time">
+            <MessagesTransmitter v-if="message.userhash == userhash" :text="message.text" :time="message.time">
             </MessagesTransmitter>
             <MessagesRecipient v-else :name="message.usernickname" :text="message.text" :time="message.time">
             </MessagesRecipient>
@@ -37,6 +37,7 @@ onMounted(() => {
     if (!store.state.token) {
         router.push("/login");
     }
+    console.log(store.state.userhash)
 });
 
 const getMessages = async () => {
