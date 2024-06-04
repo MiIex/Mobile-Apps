@@ -1,5 +1,5 @@
 <template>
-    <div class="messages-container">
+    <div class="messages-container" :class="textSizeClass">
         <div class="header">
             <RouterLink to="/chat" tag="button">
                 <Button class="chat"><i class="pi pi-angle-left"></i></Button>
@@ -31,6 +31,7 @@ import { useRouter } from 'vue-router';
 
 const store = useStore();
 const router = useRouter();
+const textSizeClass = computed(() => store.getters.textSize);
 
 let key = store.state.token;
 let userhash = store.state.userhash

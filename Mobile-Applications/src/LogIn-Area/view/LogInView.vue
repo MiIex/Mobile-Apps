@@ -7,9 +7,17 @@ export default {
 }
 </script>
 
+<script setup>
+import { computed } from 'vue';
+import { useStore } from 'vuex'
+
+const store = useStore()
+const textSizeClass = computed(() => store.getters.textSize);
+</script>
+
 <template>
-  <h1>Login</h1>
-  <LogIn></LogIn>
+  <div :class="textSizeClass">
+    <h1>Login</h1>
+    <LogIn></LogIn>
+  </div>
 </template>
-
-

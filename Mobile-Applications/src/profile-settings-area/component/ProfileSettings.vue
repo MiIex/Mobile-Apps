@@ -1,33 +1,32 @@
 <template>
     <ConfirmDialog></ConfirmDialog>
-    <div :class="[textSizeClass, 'settings-container']">
+    <div class="settings-container">
         <Card>
             <template #content>
-                <div :class="textSizeClass" class="card flex flex-column md:flex-row gap-3">
+                <div class="card flex flex-column md:flex-row gap-3">
                     <div class="profile-image-container">
                         <img :src="profileImageUrl" class="profile-image" alt="Profile Image">
                     </div>
-                    <Button :class="textSizeClass" label="Profilbild ändern">
+                    <Button label="Profilbild ändern">
                         <FileUpload mode="basic" name="demo[]" accept="image/*" :maxFileSize="1000000" customUpload
                             @select="profileImage" chooseLabel="Browse" />
                     </Button>
-                    <Button :class="textSizeClass" label="Status setzen" @click="visible = true"></Button>
+                    <Button label="Status setzen" @click="visible = true"></Button>
                     <Dialog v-model:visible="visible" modal header="Change Status" :style="{ width: '25rem' }">
-                        <div :class="textSizeClass" class="flex align-items-center gap-3 mb-3">
+                        <div class="flex align-items-center gap-3 mb-3">
                             <label for="status" class="font-semibold w-6rem">Status</label>
-                            <InputText v-model="status" id="status" :class="textSizeClass, flex - auto"
-                                autocomplete="off" />
+                            <InputText v-model="status" id="status" class=" flex - auto" autocomplete="off" />
                         </div>
                         <div class="flex justify-content-end gap-2">
-                            <Button type="button" :class="textSizeClass" label="Cancel" severity="secondary"
-                                @click="visible = false"></Button>
-                            <Button type="button" :class="textSizeClass" label="Save" @click="saveStatus"></Button>
+                            <Button type="button" label="Cancel" severity="secondary" @click="visible = false"></Button>
+                            <Button type="button" label="Save" @click="saveStatus"></Button>
                         </div>
                     </Dialog>
-                    <Button :class="textSizeClass" label="Log Out" @click="confirmLogout()"></Button>
-                    <Button :class="textSizeClass" label="Deregister" @click="confirmDeregister()"></Button>
+                    <Button label="Log Out" @click="confirmLogout()"></Button>
+                    <Button label="Deregister" @click="confirmDeregister()"></Button>
+
                 </div>
-                <Panel :class="textSizeClass" class="status-container" header="Status">
+                <Panel class="status-container" header="Status">
                     <p>{{ storedStatus }}</p>
                 </Panel>
             </template>
@@ -51,14 +50,9 @@ const visible = ref(false);
 const status = ref("");
 const store = useStore();
 
-const textSizeClass = ref(store.getters.textSize);
 
 const profileImageUrl = ref(localStorage.getItem('profileImageUrl') || '');
 const storedStatus = ref(localStorage.getItem('status') || '');
-
-watch(() => store.getters.textSize, (newSize) => {
-    textSizeClass.value = newSize;
-});
 
 const confirmLogout = () => {
     confirm.require({
@@ -140,13 +134,6 @@ const saveStatus = () => {
     console.log(store.state.status);
     visible.value = false;
 };
-
-onMounted(() => {
-    const storedSize = localStorage.getItem('textSize');
-    if (storedSize) {
-        store.commit('textsize', storedSize);
-    }
-});
 </script>
 
 <style lang="scss" scoped>
