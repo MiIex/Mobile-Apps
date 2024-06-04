@@ -3,7 +3,7 @@
         <div class="fixed-input">
             <i class="pi pi-plus"></i>
             <i class="pi pi-face-smile"></i>
-            <InputText type="text" v-model="value" class="input-text" />
+            <InputText type="text" v-model="value" style="height: 45px;" />
             <i class="pi pi-send" @click="sendMessage(value.value)"></i>
             <i class="pi pi-camera"></i>
         </div>
@@ -19,15 +19,15 @@ const store = useStore()
 
 const value = ref(null);
 
-const sendMessage = async (message) => {
-    let result = await axios({
-        method: 'post',
-        url: "https://www2.hs-esslingen.de/~melcher/map/chat/api/",
-        data: {
-            token: store.state.token,
-            text: message
-        }
-    })
+const sendMessage = (token) => {
+    console.warn("A", token)
+    console.log(value.value)
+    console.log(token)
+    return axios.post("https://www2.hs-esslingen.de/~melcher/map/chat/api/index.php/", 
+    {request:"postmessage",
+    token:token,
+    text:value.value})
+   
 }
 </script>
 

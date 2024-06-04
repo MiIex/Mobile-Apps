@@ -1,5 +1,12 @@
 <template>
+
     <div class="messages-container">
+    <div class="header">
+        <RouterLink to="/chat" tag="button">
+            <Button><i class="pi pi-angle-left"></i></Button>
+        </RouterLink>
+        <h2>Groupchat</h2>
+    </div>
         <template v-for="message in messages">
             <MessagesTransmitter v-if="message.userhash == key" :text="message.text" :time="message.time">
             </MessagesTransmitter>
@@ -22,6 +29,7 @@ const store = useStore();
 const router = useRouter();
 
 let key = store.state.token;
+let userhash = store.state.userhash
 var messages = ref([]);
 
 onMounted(() => {
@@ -32,23 +40,23 @@ onMounted(() => {
 });
 
 const getMessages = async () => {
-    let result = await axios.get("https://www2.hs-esslingen.de/~melcher/map/chat/api/?request=getmessages", {
+    let result = await axios.get("https://www2.hs-esslingen.de/~melcher/map/chat/api/index.php/?request=getmessages", {
         params: {
             token: store.state.token
         }
     }).catch(function (error) {
-        console.error(error);
-    });
-    if (result && result.data && result.data.messages) {
-        console.log(result.data.messages);
-        let lastMessages = result.data.messages.slice(-260);
-        console.warn(lastMessages);
-        for (var message of lastMessages) {
-            messages.value.push({ userhash: message.userhash, text: message.text, usernickname: message.usernickname, time: message.time });
-        }
-        console.log(messages.value);
+
+    })
+    console.log(result.data.messages)
+    let lastMessages = result.data.messages.slice(-20)
+    console.warn(lastMessages)
+    for (var message of result.data.messages) {
+        //messages.value.push({userhash: "VBB2mJqq", text: "hahaha"})
+        messages.value.push({ userhash: message.userhash, text: message.text, usernickname: message.usernickname, time: message.time })
     }
-};
+    console.log(messages.value)
+    console.log(store.state.userhash)
+}
 
 const backgroundImageUrl = ref(localStorage.getItem('backgroundImageUrl') || '');
 
@@ -61,6 +69,7 @@ const backgroundLayerStyle = computed(() => ({
 </script>
 
 <style scoped>
+
 .messages-container {
     max-height: 90vh;
     overflow-y: auto;
@@ -76,4 +85,19 @@ const backgroundLayerStyle = computed(() => ({
     z-index: -1;
     opacity: 0.5;
 }
+
+.header{
+    display: flex;
+    height: 60px;
+    border: solid;
+    border-width: 1px;
+}
+
+Button{
+  height: 40px;
+  top: 10px;
+ 
+}
+
+
 </style>
