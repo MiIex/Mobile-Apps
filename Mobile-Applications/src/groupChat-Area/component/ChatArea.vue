@@ -5,6 +5,7 @@
                 <Button class="chat"><i class="pi pi-angle-left"></i></Button>
             </RouterLink>
             <h2>Groupchat</h2>
+            <Button class="chat" @click="loadMessages()"><i class="pi pi-refresh"></i></Button>
         </div>
         <ScrollPanel class="chat-area">
             <button @click="getMessages()" class="load-more">Mehr Nachrichten</button>
@@ -34,7 +35,7 @@ const router = useRouter();
 let key = store.state.token;
 let userhash = store.state.userhash
 let messages = ref([]);
-var shownmessages = -3
+var shownmessages = -8
 
 onMounted(() => {
     loadMessages();
@@ -51,10 +52,13 @@ const loadMessages = async () => {
     }).catch(function (error) {
 
     })
-    let lastMessages = result.data.messages.slice(-8)
+    messages.value = []
+    let lastMessages = result.data.messages.slice(shownmessages)
+    console.log(result.data.messages)
     for (var message of lastMessages) {
         messages.value.push({ userhash: message.userhash, text: message.text, usernickname: message.usernickname, time: message.time })
     }
+    console.warn(messages)
 }
 
 const getMessages = async () => {
@@ -66,13 +70,11 @@ const getMessages = async () => {
 
     })
     
-
+    messages.value = []
     shownmessages = shownmessages - 5;
-    let lastMessages = result.data.messages.slice(shownmessages-5, shownmessages)
-    lastMessages = lastMessages.reverse()
+    let lastMessages = result.data.messages.slice(shownmessages)
     for (var message of lastMessages) {
-        //messages.value.push({userhash: "VBB2mJqq", text: "hahaha"})
-        messages.value.unshift({ userhash: message.userhash, text: message.text, usernickname: message.usernickname, time: message.time })
+        messages.value.push({ userhash: message.userhash, text: message.text, usernickname: message.usernickname, time: message.time })
     }
 }
 
@@ -105,6 +107,7 @@ const backgroundLayerStyle = computed(() => ({
 
 .header {
     display: flex;
+    justify-content: space-between;
     height: 60px;
     border: solid;
     border-width: 1px;
