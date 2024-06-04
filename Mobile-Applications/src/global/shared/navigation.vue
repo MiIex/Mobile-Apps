@@ -1,5 +1,5 @@
 <template>
-    <div class="bar">
+    <div class="bar" :class="textSizeClass">
         <RouterLink to="/profilesettings" tag="button">
             <Button label="Profile" />
         </RouterLink>
@@ -11,6 +11,15 @@
         </RouterLink>
     </div>
 </template>
+
+<script setup>
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+
+const store = useStore();
+const textSizeClass = computed(() => store.getters.textSize);
+
+</script>
 
 <style scoped>
 Button {

@@ -1,12 +1,12 @@
 <template>
 
-    <div class="messages-container">
-    <div class="header">
-        <RouterLink to="/chat" tag="button">
-            <Button><i class="pi pi-angle-left"></i></Button>
-        </RouterLink>
-        <h2>Groupchat</h2>
-    </div>
+    <div class="messages-container" :class="textSizeClass">
+        <div class="header">
+            <RouterLink to="/chat" tag="button">
+                <Button><i class="pi pi-angle-left"></i></Button>
+            </RouterLink>
+            <h2>Groupchat</h2>
+        </div>
         <template v-for="message in messages">
             <MessagesTransmitter v-if="message.userhash == userhash" :text="message.text" :time="message.time">
             </MessagesTransmitter>
@@ -27,6 +27,7 @@ import { useRouter } from 'vue-router';
 
 const store = useStore();
 const router = useRouter();
+const textSizeClass = computed(() => store.getters.textSize);
 
 let key = store.state.token;
 let userhash = store.state.userhash
@@ -70,7 +71,6 @@ const backgroundLayerStyle = computed(() => ({
 </script>
 
 <style scoped>
-
 .messages-container {
     max-height: 90vh;
     overflow-y: auto;
@@ -87,18 +87,16 @@ const backgroundLayerStyle = computed(() => ({
     opacity: 0.5;
 }
 
-.header{
+.header {
     display: flex;
     height: 60px;
     border: solid;
     border-width: 1px;
 }
 
-Button{
-  height: 40px;
-  top: 10px;
- 
+Button {
+    height: 40px;
+    top: 10px;
+
 }
-
-
 </style>

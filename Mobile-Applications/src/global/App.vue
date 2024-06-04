@@ -1,29 +1,17 @@
 <template>
-    <div :class="textSizeClass">
-        <router-view></router-view>
-    </div>
+    <router-view></router-view>
 </template>
 
 <script setup>
 import { usePrimeVue } from 'primevue/config';
-import { watch } from 'vue';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import { useStore } from 'vuex';
 
 const store = useStore();
 const PrimeVue = usePrimeVue();
 
 const storedTextSize = localStorage.getItem('textSize');
-let textSizeClass = store.getters.textSize;
 const darkmodeChecked = ref(localStorage.getItem('darkmode') === 'true');
-
-window.addEventListener('storage', (event) => {
-    if (event.key === 'textSize') {
-        const newTextSize = event.newValue;
-        textSizeClass.value = newTextSize;
-        console.log(`textSize changed in localStorage to ${newTextSize}`);
-    }
-});
 
 onMounted(() => {
     darkmode(darkmodeChecked.value);
