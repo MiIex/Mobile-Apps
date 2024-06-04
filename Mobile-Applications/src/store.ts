@@ -11,11 +11,13 @@ export const store = createStore({
             chatBackgroundColor: localStorage.getItem('chatBackgroundColor') || "#ffffff", // Initialisiere aus localStorage
             status: "",
             uploadedProfileImage: null,
+            userhash: ""
         }
     },
     mutations: {
         logIn(state, token) {
             state.token = token.data.token;
+            state.userhash = token.data.userhash
         },
         darkmode(state, toggle) {
             state.darkMode = toggle;
@@ -43,6 +45,7 @@ export const store = createStore({
         },
         logOut(state) {
             state.token = "";
+            state.userhash = "";
         }
     },
     getters: {

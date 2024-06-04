@@ -50,7 +50,7 @@ const getMessages = async () => {
     console.log(result.data.messages)
     let lastMessages = result.data.messages.slice(-20)
     console.warn(lastMessages)
-    for (var message of result.data.messages) {
+    for (var message of lastMessages) {
         //messages.value.push({userhash: "VBB2mJqq", text: "hahaha"})
         messages.value.push({ userhash: message.userhash, text: message.text, usernickname: message.usernickname, time: message.time })
     }
