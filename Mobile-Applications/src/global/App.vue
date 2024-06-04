@@ -6,6 +6,7 @@
 
 <script setup>
 import { usePrimeVue } from 'primevue/config';
+import { watch } from 'vue';
 import { onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
 
@@ -13,8 +14,16 @@ const store = useStore();
 const PrimeVue = usePrimeVue();
 
 const storedTextSize = localStorage.getItem('textSize');
-const textSizeClass = store.getters.textSize;
+let textSizeClass = store.getters.textSize;
 const darkmodeChecked = ref(localStorage.getItem('darkmode') === 'true');
+
+window.addEventListener('storage', (event) => {
+    if (event.key === 'textSize') {
+        const newTextSize = event.newValue;
+        textSizeClass.value = newTextSize;
+        console.log(`textSize changed in localStorage to ${newTextSize}`);
+    }
+});
 
 onMounted(() => {
     darkmode(darkmodeChecked.value);
