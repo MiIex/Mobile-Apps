@@ -31,6 +31,7 @@
           :feedback="false" />
       </InputGroup>
       <div v-if="$v.password.$error" class="p-error">Password is required.</div>
+      <div v-if="$v.repeatPassword.$error" class="p-error">Password must be atleast 6 characters.</div>
       <InputGroup>
         <InputGroupAddon>
           <i class="pi pi-key"></i>
@@ -38,7 +39,8 @@
         <Password v-model="repeatPassword" placeholder="Passwort wiederholen" :class="{ 'p-invalid': $v.repeatPassword.$error }" toggleMask
           :feedback="false" />
       </InputGroup>
-      <div v-if="$v.repeatPassword.$error" class="p-error">Password is required.</div>
+      <div v-if="$v.repeatPassword.$error" class="p-error">Repeating password is required.</div>
+      <div v-if="$v.repeatPassword.$error" class="p-error">Password has to match.</div>
       <Button type="submit" class="p-button p-button-primary">Submit</Button>
       <RouterLink to="/login" tag="button">
         <Button label="Zurück zum Login" class="registry-btn" link></Button>
