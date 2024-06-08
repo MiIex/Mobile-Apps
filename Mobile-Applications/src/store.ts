@@ -11,7 +11,9 @@ export const store = createStore({
             selfChatColor: localStorage.getItem('selfChatColor') || "",
             status: "",
             uploadedProfileImage: null,
-            userhash: ""
+            userhash: "",
+            photo: "",
+            clearPhoto: null
         }
     },
     mutations: {
@@ -46,6 +48,14 @@ export const store = createStore({
         logOut(state) {
             state.token = "";
             state.userhash = "";
+        },
+        photo(state, image) {
+            state.photo = image;
+            localStorage.setItem('photo', image);
+        },
+        clearPhoto(state) {
+            state.photo = null;
+            localStorage.removeItem('photo');
         }
     },
     getters: {
