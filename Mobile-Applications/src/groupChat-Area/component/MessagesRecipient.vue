@@ -7,18 +7,49 @@
 </template>
 
 <script setup>
-import { defineProps, computed } from 'vue';
+import { defineProps, computed, onMounted } from 'vue';
+import { useStore } from 'vuex';
+import axios from 'axios';
+
+
+const store = useStore();
+
+onMounted(() => {
+    checkphoto()
+});
 
 const props = defineProps({
     name: String,
     text: String,
     time: String,
+    photoid: String
 });
 
 const chatBackgroundColor = computed(() => {
     const storedColor = localStorage.getItem('chatColor');
     return storedColor ? `#${storedColor}` : '#075e54'; // Default color if none set
 });
+
+const checkphoto = () => {
+    if(props.photoid){
+        getPhoto()
+    }
+}
+
+const getPhoto = async () => {
+    let result = await axios.get("https://www2.hs-esslingen.de/~melcher/map/chat/api/", {
+        params: {
+            token: store.state.token,
+            request: "getphoto",
+            photoid: props.photoid
+        },
+        
+    }).catch(function (error) {
+
+    })
+    console.log(result)
+}
+
 </script>
 
 <style scoped>

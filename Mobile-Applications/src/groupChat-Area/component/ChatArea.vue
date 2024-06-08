@@ -12,7 +12,7 @@
             <template v-for="message in messages">
                 <MessagesTransmitter v-if="message.userhash == userhash" :text="message.text" :time="message.time">
                 </MessagesTransmitter>
-                <MessagesRecipient v-else :name="message.usernickname" :text="message.text" :time="message.time">
+                <MessagesRecipient v-else :name="message.usernickname" :text="message.text" :time="message.time" :photoid="message.photoid">
                 </MessagesRecipient>
             </template>
         </ScrollPanel>
@@ -36,7 +36,7 @@ const textSizeClass = computed(() => store.getters.textSize);
 let key = store.state.token;
 let userhash = store.state.userhash
 let messages = ref([]);
-var shownmessages = -8
+var shownmessages = -200
 
 onMounted(() => {
     loadMessages();
@@ -60,7 +60,7 @@ const loadMessages = async () => {
     messages.value = []
     let lastMessages = result.data.messages.slice(shownmessages)
     for (var message of lastMessages) {
-        messages.value.push({ userhash: message.userhash, text: message.text, usernickname: message.usernickname, time: message.time })
+        messages.value.push({ userhash: message.userhash, text: message.text, usernickname: message.usernickname, time: message.time, photoid: message.photoid })
     }
 }
 
