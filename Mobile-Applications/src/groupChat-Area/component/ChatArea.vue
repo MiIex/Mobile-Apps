@@ -10,9 +10,11 @@
         <ScrollPanel class="chat-area">
             <button @click="getMessages()" class="load-more">Mehr Nachrichten</button>
             <template v-for="message in messages">
-                <MessagesTransmitter v-if="message.userhash == userhash" :text="message.text" :time="message.time">
+                <MessagesTransmitter v-if="message.userhash == userhash" :text="message.text" :time="message.time"
+                    :photoid="message.photoid">
                 </MessagesTransmitter>
-                <MessagesRecipient v-else :name="message.usernickname" :text="message.text" :time="message.time" :photoid="message.photoid">
+                <MessagesRecipient v-else :name="message.usernickname" :text="message.text" :time="message.time"
+                    :photoid="message.photoid">
                 </MessagesRecipient>
             </template>
         </ScrollPanel>
@@ -52,7 +54,7 @@ const loadMessages = async () => {
             request: "getmessages",
             timestamp: Date.now()
         },
-        
+
     }).catch(function (error) {
 
     })
