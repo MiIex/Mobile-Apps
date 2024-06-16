@@ -1,7 +1,7 @@
 <template>
     <div>
         <video ref="videoNode" id="player" autoplay></video>
-        <button @click="takePhoto">Take Photo</button>
+        <div class="photo-button" @click="takePhoto"></div>
     </div>
 </template>
 
@@ -80,3 +80,22 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.photo-button {
+    width: 60px;
+    height: 60px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out;
+}
+
+.photo-button:active {
+    transform: translateX(-50%) scale(0.9);
+}
+</style>
