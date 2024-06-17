@@ -24,6 +24,7 @@
         <RouterLink to="/registry" tag="button">
           <Button label="Neuen Account erstellen" class="registry-btn" link></Button>
         </RouterLink>
+        <button @click="test"></button>
       </div>
     </template>
   </Card>
@@ -63,7 +64,7 @@ export default {
       this.$router.push("/chat")
       console.log(this.$store.state.token)
 
-    }
+    },
   },
 }
 </script>

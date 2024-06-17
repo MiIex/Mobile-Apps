@@ -52,7 +52,6 @@ const getPhoto = async () => {
 
         const blobUrl = URL.createObjectURL(result.data); // convert blob to URL
         image.value = blobUrl;
-        console.log(image)
         photoIsAvailable.value = true;
     } catch (error) {
         console.error("Error fetching photo:", error);

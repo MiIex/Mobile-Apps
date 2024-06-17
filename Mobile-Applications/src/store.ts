@@ -3,7 +3,7 @@ import { createStore } from 'vuex';
 export const store = createStore({
     state() {
         return {
-            token: "",
+            token: "tN9g3oY7",
             darkMode: false,
             textSize: localStorage.getItem('textSize') || "medium-text", // Initialisiere aus localStorage
             uploadedBackgroundImage: null,

@@ -30,6 +30,7 @@ import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
+import {addMessagesToDb} from './../../main'
 
 const store = useStore();
 const router = useRouter();
@@ -38,7 +39,7 @@ const textSizeClass = computed(() => store.getters.textSize);
 let key = store.state.token;
 let userhash = store.state.userhash
 let messages = ref([]);
-var shownmessages = -200
+var shownmessages = -10
 
 onMounted(() => {
     loadMessages();
@@ -58,12 +59,12 @@ const loadMessages = async () => {
     }).catch(function (error) {
 
     })
-    console.log(result)
     messages.value = []
     let lastMessages = result.data.messages.slice(shownmessages)
     for (var message of lastMessages) {
-        messages.value.push({ userhash: message.userhash, text: message.text, usernickname: message.usernickname, time: message.time, photoid: message.photoid })
+        messages.value.push({ id: message.id, userhash: message.userhash, text: message.text, usernickname: message.usernickname, time: message.time, photoid: message.photoid })
     }
+    addMessagesToDb(messages)
 }
 
 const getMessages = async () => {
@@ -79,8 +80,9 @@ const getMessages = async () => {
     shownmessages = shownmessages - 5;
     let lastMessages = result.data.messages.slice(shownmessages)
     for (var message of lastMessages) {
-        messages.value.push({ userhash: message.userhash, text: message.text, usernickname: message.usernickname, time: message.time })
+        messages.value.push({ id: message.id, userhash: message.userhash, text: message.text, usernickname: message.usernickname, time: message.time })
     }
+    addMessagesToDb(messages)
 }
 
 const backgroundImageUrl = ref(localStorage.getItem('backgroundImageUrl') || '');
