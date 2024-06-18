@@ -30,7 +30,8 @@ import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import {addMessagesToDb} from './../../main'
+import { addMessagesToDb, getMessagesFromDB } from './../../main'
+import { toRaw } from 'vue';
 
 const store = useStore();
 const router = useRouter();
@@ -57,21 +58,38 @@ const loadMessages = async () => {
         },
 
     }).catch(function (error) {
-
+       getMessagesFromDB()
     })
     messages.value = []
-    let lastMessages = result.data.messages.slice(shownmessages)
-    for (var message of lastMessages) {
+
+    if(!result){
+        const dbMessages = computed(() => toRaw(store.getters.messages));
+        let lastMessages = dbMessages.value
+       for (var message of lastMessages) {
         messages.value.push({ id: message.id, userhash: message.userhash, text: message.text, usernickname: message.usernickname, time: message.time, photoid: message.photoid })
     }
+    } else {
+        let lastMessages = result.data.messages.slice(shownmessages)
+        for (var message of lastMessages) {
+        messages.value.push({ id: message.id, userhash: message.userhash, text: message.text, usernickname: message.usernickname, time: message.time, photoid: message.photoid })
+    }
+    console.error(result.data.messages)
+    console.log(messages.value)
     addMessagesToDb(messages)
+    }
+   
+    
+    
 }
 
+
 const getMessages = async () => {
-    let result = await axios.get("https://www2.hs-esslingen.de/~melcher/map/chat/api/index.php/?request=getmessages", {
+    let result = await axios.get("https://www2.hs-esslingen.de/~melcher/map/chat/api/", {
         params: {
-            token: store.state.token
-        }
+            token: store.state.token,
+            request: "getmessages",
+            timestamp: Date.now()
+        },
     }).catch(function (error) {
 
     })

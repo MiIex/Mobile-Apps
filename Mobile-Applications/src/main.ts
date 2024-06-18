@@ -2,7 +2,7 @@
 import './assets/text.css'
 import './assets/main.css'
 import { createApp } from 'vue'
-import { createStore } from 'vuex'
+
 import App from './global/App.vue'
 import { router } from './router'
 import PrimeVue from 'primevue/config';
@@ -39,6 +39,7 @@ app.mount('#app')
 const DB_NAME = 'chat-db';
 const DB_VERSION = 1; // Use a long long for this value (don't use a float)
 const DB_STORE_NAME = 'messages';
+const DB_STORE_NAME_2 = 'state'
 
 var db;
 openDb()
@@ -66,6 +67,22 @@ function openDb() {
         store.createIndex('usernickname', 'usernickname', { unique: false });
         store.createIndex('time', 'time', { unique: false });
         store.createIndex('photoid', 'photoid', { unique: false });
+
+        store = evt.currentTarget.result.createObjectStore(
+            DB_STORE_NAME_2, { keyPath: 'id', autoIncrement: true });
+
+        store.createIndex('token', 'token', { unique: false });
+        store.createIndex('darkmode', 'darkmode', { unique: false });
+        store.createIndex('textSize', 'textSize', { unique: false });
+        store.createIndex('uploadedBackgroundImage', 'uploadedBackgroundImage', { unique: false });
+        store.createIndex('chatColor', 'chatColor', { unique: false });
+        store.createIndex('selfChatColor', 'selfChatColor', { unique: false });
+        store.createIndex('status', 'status', { unique: false });
+        store.createIndex('uploadedProfileImage', 'uploadedProfileImage', { unique: false });
+        store.createIndex('userhash', 'userhash', { unique: false });
+        store.createIndex('photo', 'photo', { unique: false });
+        store.createIndex('clearPhoto', 'clearPhoto', { unique: false });
+
     };
 }
 
@@ -75,11 +92,9 @@ function getObjectStore(store_name, mode) {
   }
 
 export function addMessagesToDb(messages: any) {
-    console.log(messages.value)
-    console.log(messages.value[0])
-    for(let i = 0; i < messages.value.length; i++){
-       
    
+    for(let i = 0; i < messages.value.length; i++){
+
     var obj = {
         messageid: messages.value[i].id,
         userhash: messages.value[i].userhash,
@@ -93,10 +108,48 @@ export function addMessagesToDb(messages: any) {
 
     try{
         req = store.add(obj)
-        console.warn(obj)
     } catch (e) {
         console.log(e)
     }
 }
+getMessagesFromDB()
+}
+
+export function saveStoreToDb(state: any){
+
+
+
+    var obj = {
+        token: state.token,
+        darkmode: state.darkMode,
+        testSize: state.textSize,
+        uploadedBackgroundImage: state.uploadedBackgroundImage,
+        chatColor: state.chatColor,
+        selfChatColor: state.selfChatColor,
+        status: state.status,
+        uploadedProfileImage: state.uploadedProfileImage,
+        userhash: state.userhash,
+        photo: state.photo,
+        clearPhoto: state.clearPhoto
+    }
+    var req;
+    var store = getObjectStore(DB_STORE_NAME_2, 'readwrite');
+
+    try{
+        req = store.add(obj)
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+export async function getMessagesFromDB() {
+    const request = db.transaction(DB_STORE_NAME).objectStore(DB_STORE_NAME).getAll();
+    request.onsuccess = () => {
+        const messages = request.result;
+        store.commit('saveMessages', messages)
+       
+        return messages
+    }
+    
 }
 
