@@ -5,13 +5,11 @@
             <i @click="clearPhoto" class="pi pi-times delete-photo-button"></i>
         </div>
         <div class="fixed-input">
-            <i class="pi pi-plus"></i>
-            <i class="pi pi-face-smile"></i>
-            <InputText type="text" v-model="value" style="height: 45px;" />
-            <i class="pi pi-send" @click="sendMessage(store.state.token)"></i>
             <RouterLink to="/camera" tag="button">
                 <i class="pi pi-camera"></i>
             </RouterLink>
+            <InputText type="text" v-model="value" class="input-text"/>
+            <i class="pi pi-send" @click="sendMessage(store.state.token)"></i>
         </div>
     </div>
 </template>
@@ -80,8 +78,10 @@ const clearPhoto = () => {
 .fixed-input {
     display: flex;
     align-items: center;
+    justify-content: center;
     padding: 1vh;
     box-sizing: border-box;
+    width: 100%;
 }
 
 .pi {
@@ -91,7 +91,7 @@ const clearPhoto = () => {
 .input-text {
     flex-grow: 1;
     height: 6vh;
-    width: 1vh;
+    width: 20vh; /* Adjusted to ensure proper sizing */
 }
 
 .pi-send,
