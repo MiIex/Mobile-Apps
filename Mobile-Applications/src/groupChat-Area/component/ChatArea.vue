@@ -60,6 +60,8 @@ const loadMessages = async () => {
     }).catch(function (error) {
        getMessagesFromDB()
     })
+    messages.value = []
+
     if(!result){
         const dbMessages = computed(() => toRaw(store.getters.messages));
         let lastMessages = dbMessages.value
@@ -82,10 +84,12 @@ const loadMessages = async () => {
 
 
 const getMessages = async () => {
-    let result = await axios.get("https://www2.hs-esslingen.de/~melcher/map/chat/api/index.php/?request=getmessages", {
+    let result = await axios.get("https://www2.hs-esslingen.de/~melcher/map/chat/api/", {
         params: {
-            token: store.state.token
-        }
+            token: store.state.token,
+            request: "getmessages",
+            timestamp: Date.now()
+        },
     }).catch(function (error) {
 
     })

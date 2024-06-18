@@ -1,7 +1,8 @@
 <template>
-    <div>
-        <video ref="videoNode" id="player" autoplay></video>
+    <div class="video-container">
+        <video ref="videoNode" id="player" autoplay class="video"></video>
         <div class="photo-button" @click="takePhoto"></div>
+        <button class="back-button" @click="goBack">Back</button>
     </div>
 </template>
 
@@ -23,7 +24,7 @@ export default {
             navigator.mediaDevices.getUserMedia({
                 video: { width: 640, height: 480 },
                 audio: false,
-                facingMode: 'user', // or environment
+                facingMode: 'user',
             }).then(newStream => {
                 console.log('Established stream');
                 videoNode.value.srcObject = newStream;
@@ -57,10 +58,13 @@ export default {
             photo = context.canvas.toDataURL();
             context.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Speichern des Fotos im Vuex-Store
             store.commit('photo', photo);
 
-            // Kamera ausschalten und zurück navigieren
+            switchOff();
+            router.push('/groupchat');
+        };
+
+        const goBack = () => {
             switchOff();
             router.push('/groupchat');
         };
@@ -76,12 +80,28 @@ export default {
         return {
             videoNode,
             takePhoto,
+            goBack,
         };
     },
 };
 </script>
 
 <style scoped>
+.video-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.video {
+    width: 100%;
+    height: 90%;
+    margin-bottom: 15vh;
+    object-fit: cover;
+}
+
 .photo-button {
     width: 60px;
     height: 60px;
@@ -97,5 +117,22 @@ export default {
 
 .photo-button:active {
     transform: translateX(-50%) scale(0.9);
+}
+
+.back-button {
+    width: 80px;
+    height: 40px;
+    background-color: lightgray;
+    border: none;
+    border-radius: 5px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.back-button:hover {
+    background-color: gray;
 }
 </style>
