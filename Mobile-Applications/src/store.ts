@@ -1,9 +1,10 @@
 import { createStore } from 'vuex';
+import { saveStoreToDb } from './main';
 
 export const store = createStore({
     state() {
         return {
-            token: "tN9g3oY7",
+            token: "",
             darkMode: false,
             textSize: localStorage.getItem('textSize') || "medium-text", // Initialisiere aus localStorage
             uploadedBackgroundImage: null,
@@ -13,13 +14,15 @@ export const store = createStore({
             uploadedProfileImage: null,
             userhash: "",
             photo: "",
-            clearPhoto: null
+            clearPhoto: null,
+            messages: []
         }
     },
     mutations: {
         logIn(state, token) {
             state.token = token.data.token;
-            state.userhash = token.data.hash
+            state.userhash = token.data.hash;
+            saveStoreToDb(state)
         },
         darkmode(state, toggle) {
             state.darkMode = toggle;
@@ -56,9 +59,13 @@ export const store = createStore({
         clearPhoto(state) {
             state.photo = null;
             localStorage.removeItem('photo');
+        },
+        saveMessages(state, messages) {
+            state.messages = messages
         }
     },
     getters: {
+        messages: state => state.messages,
         textSize: state => state.textSize
     }
 });

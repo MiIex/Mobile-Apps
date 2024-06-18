@@ -24,8 +24,7 @@
         <RouterLink to="/registry" tag="button">
           <Button label="Neuen Account erstellen" class="registry-btn" link></Button>
         </RouterLink>
-        <button @click="test"></button>
-      </div>
+     </div>
     </template>
   </Card>
 </template>
