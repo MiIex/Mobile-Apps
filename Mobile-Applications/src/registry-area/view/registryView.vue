@@ -1,5 +1,7 @@
 <script>
 import Registry from './../component/registry.vue';
+import logo from './../../assets/file.png';
+
 export default {
   components: {
     Registry
@@ -17,7 +19,36 @@ const textSizeClass = computed(() => store.getters.textSize);
 
 <template>
   <div :class="textSizeClass">
-    <h1>Registrieren</h1>
-    <Registry></Registry>
+    <div class="logo-container">
+      <img :src="logo" alt="Car Logo" class="logo-image">
+      <p class="logo-text">CarRestore</p>
+    </div>
+
+    <div class="register-container">
+      <h1>Registrieren</h1>
+      <Registry></Registry>
+    </div>
   </div>
 </template>
+
+<style scoped>
+.logo-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo-text {
+  position: relative;
+  font-weight: bold;
+  bottom: 10vh;
+}
+
+.logo-image {
+  width: 20vh;
+  height: 20vh;
+}
+
+.register-container {
+
+}
+</style>

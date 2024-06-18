@@ -33,12 +33,11 @@ const textSizeClass = computed(() => store.getters.textSize);
 <style scoped>
 .logo-container {
   text-align: center;
-  margin-bottom: 20px; /* Abstand zwischen Logo und Login */
+  margin-bottom: 20px;
 }
 
 .logo-text {
   position: relative;
-  font-size: 24px; /* Größere Schriftgröße für den Text */
   font-weight: bold;
   bottom: 10vh;
 }
